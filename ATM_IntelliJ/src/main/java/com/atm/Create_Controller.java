@@ -13,6 +13,8 @@ public class Create_Controller
             case "6" : case "7" : case "8" : case "9" : case "0" :
                 model.processNumbers(action);
                 break;
+
+                // REDUNDANT CODE, please do NOT USE - Luke
 //            case "NAN":
 //                model.processNumber();
 //                break;
@@ -22,15 +24,20 @@ public class Create_Controller
 //            case "CNA":
 //                model.processFinish();
 //                break;
-//            case "CAN":
-//                model.logout();
-//                break;
+
+            case "EXIT":
+                model.quitApplication();
+                break;
+
+            case "CAN":
+                model.cancelOperation();
+                break;
 //            case "CLR":
 //                model.processClear();
 //                break;
-//            case "Ent":
-//                model.processEnter();
-//                break;
+            case "Ent":
+                model.createAccount();
+                break;
             default:
 //                model.processUnknownKey(action);
                 break;

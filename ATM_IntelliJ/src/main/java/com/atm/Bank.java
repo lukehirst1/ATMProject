@@ -9,6 +9,7 @@ package com.atm;
 // working in lab sessions.
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 // If you choose the ATM for your project, you should make other modifications to
 // the system yourself, based on similar examples we will cover in lectures and labs.
@@ -16,7 +17,8 @@ public class Bank
 {
     // Instance variables containing the bank information
     ArrayList<BankAccount> accounts = new ArrayList<>();  // array to hold the bank accounts
-    BankAccount account = null; // currently logged in account ('null' if no-one is logged in)
+    BankAccount account = null;  // currently logged in account ('null' if no-one is logged in)
+    protected TreeMap<String, String> bAccounts;
 
     // Constructor method - this provides a couple of example bank accounts to work with
     public Bank()

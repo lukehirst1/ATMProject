@@ -14,6 +14,7 @@ public class Create_Model extends Bank
     Bank  bank = null;              // The ATM talks to a bank, represented by the Bank object.
     int accNumber = -1;             // Account number typed in
     int accPasswd = -1;             // Password typed in
+    int accBalance = -1;               // Initial Balance
     // These three are what are shown on the View display
     String title = "Bank ATM Account Creation";      // The contents of the title message
     String display1 = null;         // The contents of the Message 1 box (a single line)
@@ -31,8 +32,42 @@ public class Create_Model extends Bank
     // provided as argument and standard instruction message
     public void initialise(String message) {
         display1 = message;
-        display2 =  "Please enter a new account number\n" +
-                "Followed by \"NAN\"";
+        display2 =  "Please enter a new account number and account password\n" +
+                "Followed by \"Ent\"";
+    }
+
+    public void createAccount()
+    {
+        String addNumber = view.accNumber.getText();
+        String addPasswd = view.accPasswd.getText();
+        String balance = view.accBalance.getText();
+
+        if (!view.accNumber.getText().isEmpty() && !view.accPasswd.getText().isEmpty() && !view.accBalance.getText().isEmpty())
+        {
+            bank.addBankAccount(makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance)));
+            Debug.trace("Account creation successful!");
+        }
+        else if (addNumber.length() != 5 || addPasswd.length() != 5)
+        {
+            Debug.error("Cannot make account, invalid values");
+        }
+        else if (balance.length() <= 0)
+        {
+            Debug.error("The balance cannot be below zero.");
+        }
+    }
+
+    public void quitApplication()
+    {
+        System.exit(0);
+    }
+
+    public void cancelOperation()
+    {
+        view.accBalance.setText("");
+        view.accNumber.setText("");
+        view.accPasswd.setText("");
+        Debug.trace("All values cleared");
     }
 
     // These methods are called by the Controller to change the Model

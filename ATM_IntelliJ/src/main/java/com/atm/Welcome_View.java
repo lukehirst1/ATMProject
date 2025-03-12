@@ -2,13 +2,15 @@ package com.atm;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.*;
 
-public class Create_View
+public class Welcome_View
 {
     int H = 420;         // Height of window pixels
     int W = 500;
@@ -56,10 +58,10 @@ public class Create_View
         grid.add(accBalanceL, 1, 3);
 
         String labels[][] = {
-                {"7",    "8",  "9",  "",  "",  ""},
-                {"4",    "5",  "6",  "",  "",  ""},
-                {"1",    "2",  "3",  "",  "CAN",  ""},
-                {"CLR",  "0",  "",   "",  "EXIT",     "Ent"} };
+                {"7",    "8",  "9",  "Launch banking functionality",  "",  ""},
+                {"4",    "5",  "6",  "",  "Create a new account",  ""},
+                {"1",    "2",  "3",  "",  "",  ""},
+                {"CLR",  "0",  "",   "",  "", ""} };
 
         for ( String[] row: labels ) {
             for (String label: row) {
