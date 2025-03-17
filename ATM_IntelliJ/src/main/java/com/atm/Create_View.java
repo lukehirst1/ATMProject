@@ -3,6 +3,9 @@ package com.atm;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
@@ -23,6 +26,7 @@ public class Create_View
     TextField selectedTf = new TextField() ;
     GridPane   grid;          // main layout grid
     TilePane   buttonPane;
+    CheckBox premium = new CheckBox("Would you like to apply for a premium account?");
 
     public Create_Model model;
     public Create_Controller controller;
@@ -34,28 +38,30 @@ public class Create_View
         buttonPane = new TilePane();
         buttonPane.setId("Buttons");
 
-        title  = new Label();           // Message bar at the top for the title
+        title  = new Label("create new Account");           // Message bar at the top for the title
         grid.add( title, 0, 0);         // Add to GUI at the top
 
         accNumber  = new TextField();
         accNumberL = new Label("New Account Number");
         accNumber.setOnMouseClicked(mouseEvent -> selectedTf = accNumber);
-        grid.add (accNumberL, 1, 1);// text field for numbers and error messages
-        grid.add( accNumber, 0, 1);       // Add to GUI on second row
+        grid.add (accNumberL, 0, 1);// text field for numbers and error messages
+        grid.add( accNumber, 1, 1);       // Add to GUI on second row
 
         accPasswd = new TextField();
         accPasswdL = new Label("New Account Password");
         accPasswd.setOnMouseClicked(mouseEvent -> selectedTf = accPasswd);
-        grid.add(accPasswd, 0, 2);
-        grid.add(accPasswdL, 1, 2);
+        grid.add(accPasswd, 1, 2);
+        grid.add(accPasswdL, 0, 2);
 
         accBalance = new TextField();
         accBalanceL = new Label("Set Balance");
         accBalance.setOnMouseClicked(mouseEvent -> selectedTf = accBalance);
-        grid.add(accBalance, 0, 3);
-        grid.add(accBalanceL, 1, 3);
+        grid.add(accBalance, 1, 3);
+        grid.add(accBalanceL, 0, 3);
 
-        String labels[][] = {
+        grid.add(premium, 2, 3);
+
+        String[][] labels = {
                 {"7",    "8",  "9",  "",  "",  ""},
                 {"4",    "5",  "6",  "",  "",  ""},
                 {"1",    "2",  "3",  "",  "CAN",  ""},
@@ -76,7 +82,7 @@ public class Create_View
             }
         }
 
-        grid.add(buttonPane,0,4); // add the tiled pane of buttons to the grid
+        grid.add(buttonPane,1,4); // add the tiled pane of buttons to the grid
 
         // add the complete GUI to the window and display it
         Scene scene = new Scene(grid, W, H);
@@ -90,17 +96,17 @@ public class Create_View
     public void buttonClicked(ActionEvent event) {
         // this line asks the event to provide the actual Button object that was clicked
         Button b = ((Button) event.getSource());
-        //if ( controller != null )
-       // {
+        if ( controller != null )
+        {
             String label = b.getText();   // get the button label
             Debug.trace( "View::buttonClicked: label = "+ label );
             // Try setting a breakpoint here
             controller.process( label );  // Pass it to the controller's process method
-        //}
+        }
     }
 
-    public void update()
-    {
+//    public void update()
+//    {
 //        if (model != null) {
 //            Debug.trace( "View::update" );
 //            String message1 = model.title;        // get the new title from the model
@@ -110,6 +116,6 @@ public class Create_View
 //            String message3 = model.display2;     // get the new message2 from the model
 //            reply.setText( message3 );            // add it as text of GUI control output2
 //        }
-    }
+//    }
 
 }

@@ -15,7 +15,7 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.util.*;
 
-class View
+public class View
 {
     int H = 420;         // Height of window pixels
     int W = 500;         // Width  of window pixels
@@ -107,6 +107,7 @@ class View
         Scene scene = new Scene(grid, W, H);
         scene.getStylesheets().add("atm.css"); // tell the app to use our css file
         window.setScene(scene);
+        window.setTitle("Welcome to the ATM");
         window.show();
     }
 

@@ -15,6 +15,9 @@ public class Create_Model extends Bank
     int accNumber = -1;             // Account number typed in
     int accPasswd = -1;             // Password typed in
     int accBalance = -1;               // Initial Balance
+    public Boolean isPremium = false;
+    public Boolean canOverdraft = false;
+    public Boolean canHigherWD = false;
     // These three are what are shown on the View display
     String title = "Bank ATM Account Creation";      // The contents of the title message
     String display1 = null;         // The contents of the Message 1 box (a single line)
@@ -44,8 +47,22 @@ public class Create_Model extends Bank
 
         if (!view.accNumber.getText().isEmpty() && !view.accPasswd.getText().isEmpty() && !view.accBalance.getText().isEmpty())
         {
-            bank.addBankAccount(makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance)));
-            Debug.trace("Account creation successful!");
+            if (view.premium.isSelected())
+            {
+                bank.addBankAccount(makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance)));
+                Debug.trace("Premium account created!");
+                isPremium = true;
+                canHigherWD = true;
+                canOverdraft = true;
+            }
+            else
+            {
+                bank.addBankAccount(makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance)));
+                Debug.trace("Basic account created!");
+                isPremium = false;
+                canHigherWD = false;
+                canOverdraft = false;
+            }
         }
         else if (addNumber.length() != 5 || addPasswd.length() != 5)
         {

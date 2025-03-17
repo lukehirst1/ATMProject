@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
@@ -16,18 +15,19 @@ public class Welcome_View
     int W = 500;
 
     Label      title;         // Title area (not the window title)
-    Label      accNumberL;
-    Label      accPasswdL;
-    Label      accBalanceL;
-    TextField  accNumber;       // Message area, where numbers appear
-    TextField  accPasswd;
-    TextField  accBalance;
-    TextField selectedTf = new TextField() ;
+//    Label      accNumberL;
+//    Label      accPasswdL;
+//    Label      accBalanceL;
+//    TextField  accNumber;       // Message area, where numbers appear
+//    TextField  accPasswd;
+//    TextField  accBalance;
+//    TextField selectedTf = new TextField() ;
     GridPane   grid;          // main layout grid
     TilePane   buttonPane;
 
-    public Create_Model model;
-    public Create_Controller controller;
+    public Welcome_Controller controller;
+    public Welcome_Model model;
+    public Main main = new Main();
 
     public void start(Stage window)
     {
@@ -39,29 +39,29 @@ public class Welcome_View
         title  = new Label();           // Message bar at the top for the title
         grid.add( title, 0, 0);         // Add to GUI at the top
 
-        accNumber  = new TextField();
-        accNumberL = new Label("New Account Number");
-        accNumber.setOnMouseClicked(mouseEvent -> selectedTf = accNumber);
-        grid.add (accNumberL, 1, 1);// text field for numbers and error messages
-        grid.add( accNumber, 0, 1);       // Add to GUI on second row
-
-        accPasswd = new TextField();
-        accPasswdL = new Label("New Account Password");
-        accPasswd.setOnMouseClicked(mouseEvent -> selectedTf = accPasswd);
-        grid.add(accPasswd, 0, 2);
-        grid.add(accPasswdL, 1, 2);
-
-        accBalance = new TextField();
-        accBalanceL = new Label("Set Balance");
-        accBalance.setOnMouseClicked(mouseEvent -> selectedTf = accBalance);
-        grid.add(accBalance, 0, 3);
-        grid.add(accBalanceL, 1, 3);
+//        accNumber  = new TextField();
+//        accNumberL = new Label("New Account Number");
+//        accNumber.setOnMouseClicked(mouseEvent -> selectedTf = accNumber);
+//        grid.add (accNumberL, 1, 1);// text field for numbers and error messages
+//        grid.add( accNumber, 0, 1);       // Add to GUI on second row
+//
+//        accPasswd = new TextField();
+//        accPasswdL = new Label("New Account Password");
+//        accPasswd.setOnMouseClicked(mouseEvent -> selectedTf = accPasswd);
+//        grid.add(accPasswd, 0, 2);
+//        grid.add(accPasswdL, 1, 2);
+//
+//        accBalance = new TextField();
+//        accBalanceL = new Label("Set Balance");
+//        accBalance.setOnMouseClicked(mouseEvent -> selectedTf = accBalance);
+//        grid.add(accBalance, 0, 3);
+//        grid.add(accBalanceL, 1, 3);
 
         String labels[][] = {
-                {"7",    "8",  "9",  "Launch banking functionality",  "",  ""},
-                {"4",    "5",  "6",  "",  "Create a new account",  ""},
-                {"1",    "2",  "3",  "",  "",  ""},
-                {"CLR",  "0",  "",   "",  "", ""} };
+                {"Launch banking functionality", "", "", ""},
+                {"Create new account", "", "", "", ""},
+                {"EXIT", "", "", "", ""},
+                {"", "", "", "", ""} };
 
         for ( String[] row: labels ) {
             for (String label: row) {
@@ -72,7 +72,7 @@ public class Welcome_View
                     buttonPane.getChildren().add( b );    // and add to tiled pane
                 } else {
                     // empty string - add an empty text element as a spacer
-                    buttonPane.getChildren().add( new Text() );
+                    buttonPane.getChildren().add( new Text());
 
                 }
             }
@@ -84,21 +84,31 @@ public class Welcome_View
         Scene scene = new Scene(grid, W, H);
         scene.getStylesheets().add("atm.css"); // tell the app to use our css file
         window.setScene(scene);
-        window.setTitle("create new Account");
-        window.setX(1300);
+        window.setTitle("Welcome Page");
+        window.setY(600);
         window.show();
     }
 
     public void buttonClicked(ActionEvent event) {
         // this line asks the event to provide the actual Button object that was clicked
         Button b = ((Button) event.getSource());
-        //if ( controller != null )
-       // {
+        if ( controller != null )
+        {
             String label = b.getText();   // get the button label
             Debug.trace( "View::buttonClicked: label = "+ label );
             // Try setting a breakpoint here
             controller.process( label );  // Pass it to the controller's process method
-        //}
+        }
+    }
+
+    public void openBanking()
+    {
+        main.banking(new Stage());
+    }
+
+    public void createNewAccount()
+    {
+        main.createNewAccount(new Stage());
     }
 
     public void update()

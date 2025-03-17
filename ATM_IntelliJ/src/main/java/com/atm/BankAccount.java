@@ -16,17 +16,17 @@ public class BankAccount
     public int accPasswd = 0;
     public int balance;
     public int withdrawalLimit = 5000;
+    public int higherWithdrawalLimit = 10000;
     public int overdraftLimit = 1500;
+    public boolean isPremium;
+    public boolean canOverdraft;
+    public boolean canHigherWD;
 
-    public boolean isPremium = false;
-
-    public BankAccount()
-    { // an empty constructor
+    public BankAccount() { // an empty constructor
 
     }
 
-    public BankAccount(int a, int p, int b)
-    {
+    public BankAccount(int a, int p, int b) {
         accNumber = a;
         accPasswd = p;
         balance = b;
@@ -34,8 +34,7 @@ public class BankAccount
 
     // withdraw money from the account. Return true if successful, or
     // false if the amount is negative, or less than the amount in the account
-    public boolean withdraw( int amount )
-    {
+    public boolean withdraw(int amount) {
         Debug.trace("BankAccount::withdraw: amount =" + amount);
 
         // CHANGE CODE HERE TO WITHDRAW MONEY FROM THE ACCOUNT
@@ -45,17 +44,22 @@ public class BankAccount
             return false;
         }
 
-        if (amount > withdrawalLimit)
-        {
-            Debug.error("Over withdrawal Limit");
-            return false;
-        }
+//        if (amount > withdrawalLimit)
+//        {
+//            Debug.error("Over withdrawal Limit");
+//            return false;
+//        }
 
-        if (isPremium)
+        if (isPremium && canOverdraft && canHigherWD)
         {
             if ((balance - amount) < -overdraftLimit)
             {
                 Debug.error("Overdraft exceeded");
+                return false;
+            }
+            if (amount > higherWithdrawalLimit)
+            {
+                Debug.error("Over withdrawal Limit");
                 return false;
             }
             else
@@ -64,16 +68,18 @@ public class BankAccount
                 return true;
             }
         }
-
-        if ((balance - amount) < -overdraftLimit)
-        {
-               Debug.error("Overdraft exceeded");
-               return false;
-        }
         else
         {
-            balance = balance - amount;
-            return true;
+            if (amount > withdrawalLimit)
+            {
+                Debug.error("Over withdrawal limit");
+                return false;
+            }
+            else
+            {
+                balance = balance - amount;
+                return true;
+            }
         }
     }
 

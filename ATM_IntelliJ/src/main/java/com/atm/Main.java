@@ -12,9 +12,44 @@ import javafx.stage.Stage;
 
 public class Main extends Application
 {
+    public void start(Stage welcome) {
 
+        Welcome_View wView = new Welcome_View();
+        Welcome_Model wModel = new Welcome_Model();
+        Welcome_Controller wController = new Welcome_Controller();
 
-    public void start(Stage window)
+        wModel.view = wView;
+        wModel.controller = wController;
+
+        wController.model = wModel;
+        wController.view = wView;
+
+        wView.model = wModel;
+        wView.controller = wController;
+        wView.start(welcome);
+        wModel.initialise("Welcome to the ATM");
+    }
+
+    public void createNewAccount(Stage CNA)
+    {
+        // Create Account Functionality container
+        Bank b = new Bank();
+        Create_Model cModel = new Create_Model(b);
+        Create_View cView = new Create_View();
+        Create_Controller cController = new Create_Controller();
+
+        cModel.view = cView;
+        cModel.controller = cController;
+
+        cController.model = cModel;
+        cController.view = cView;
+
+        cView.model = cModel;
+        cView.controller = cController;
+        cView.start(new Stage());
+    }
+
+    public void banking(Stage window)
     {
         // set up debugging and print initial debugging message
         Debug.set(true);
@@ -22,15 +57,15 @@ public class Main extends Application
         Debug.trace("Main::start");
 
         // Create a Bank object for this ATM
-       Bank b = new Bank();
+        Bank b = new Bank();
         // add some test bank accounts
         b.addBankAccount(10001, 11111, 100);
         b.addBankAccount(10002, 22222, 50);
 
         // Create the Model, View and Controller objects
         Model model = new Model(b);   // the model needs the Bank object to 'talk to' the bank
-        View  view  = new View();
-        Controller controller  = new Controller();
+        View view = new View();
+        Controller controller = new Controller();
 
 
         // Link them together, so they can talk to each other
@@ -51,21 +86,11 @@ public class Main extends Application
 
         // application is now running
         Debug.trace("atm running");
+    }
 
+    public void goodbye()
+    {
 
-        Create_Model cModel = new Create_Model(b);
-        Create_View   cView  = new Create_View();
-        Create_Controller cController  = new Create_Controller();
-
-        cModel.view = cView;
-        cModel.controller = cController;
-
-        cController.model = cModel;
-        cController.view = cView;
-
-        cView.model = cModel;
-        cView.controller = cController;
-        cView.start(new Stage());
     }
 
     public static void main( String args[])
