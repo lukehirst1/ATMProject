@@ -1,11 +1,8 @@
 package com.atm;
 
-import javafx.stage.Stage;
-
-public class Welcome_Controller
+public class Goodbye_Controller
 {
-    public Welcome_View view;
-    public Welcome_Model model;
+    public Goodbye view;
 
     public void process(String action) {
         Debug.trace("Controller::process: action = " + action);
@@ -25,20 +22,8 @@ public class Welcome_Controller
 //            case "CNA":
 //                model.processFinish();
 //                break;
-            case "LNB":
-                view.openBanking();
-                break;
-
-            case "GOO":
-                view.openGoodbye();
-                break;
-
-            case "CNA":
-                view.createNewAccount();
-                break;
-
-            case "EXT":
-                System.exit(0);
+            case "QUT":
+                System.exit(20);
                 break;
 
 //            case "CAN":

@@ -59,7 +59,7 @@ public class Create_View
         grid.add(accBalance, 1, 3);
         grid.add(accBalanceL, 0, 3);
 
-        grid.add(premium, 2, 3);
+        grid.add(premium, 1, 4);
 
         String[][] labels = {
                 {"7",    "8",  "9",  "",  "",  ""},
@@ -82,31 +82,32 @@ public class Create_View
             }
         }
 
-        grid.add(buttonPane,1,4); // add the tiled pane of buttons to the grid
+        grid.add(buttonPane,1,5); // add the tiled pane of buttons to the grid
 
         // add the complete GUI to the window and display it
         Scene scene = new Scene(grid, W, H);
         scene.getStylesheets().add("atm.css"); // tell the app to use our css file
         window.setScene(scene);
         window.setTitle("create new Account");
-        window.setX(1300);
+        window.setX(200);
+        window.setY(200);
         window.show();
     }
 
     public void buttonClicked(ActionEvent event) {
         // this line asks the event to provide the actual Button object that was clicked
         Button b = ((Button) event.getSource());
-        //if ( controller != null )
-       // {
+        if ( controller != null )
+        {
             String label = b.getText();   // get the button label
             Debug.trace( "View::buttonClicked: label = "+ label );
             // Try setting a breakpoint here
             controller.process( label );  // Pass it to the controller's process method
-        //}
+        }
     }
 
-    public void update()
-    {
+//    public void update()
+//    {
 //        if (model != null) {
 //            Debug.trace( "View::update" );
 //            String message1 = model.title;        // get the new title from the model
@@ -116,6 +117,6 @@ public class Create_View
 //            String message3 = model.display2;     // get the new message2 from the model
 //            reply.setText( message3 );            // add it as text of GUI control output2
 //        }
-    }
+//    }
 
 }

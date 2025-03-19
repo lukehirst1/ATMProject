@@ -1,7 +1,13 @@
 package com.atm;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import static javafx.application.Platform.exit;
 
 // atm project Main class
 // The code here creates the ATM GUI interface and model functionality, but the methods
@@ -10,9 +16,51 @@ import javafx.stage.Stage;
 // then add further functionality/features
 // Tutors may not help directly with coding but will give you guidance
 
-public class Main extends Application
+public class Main
 {
-    public void start(Stage window)
+    Bank b = new Bank();
+    public void start(Stage welcome)
+    {
+
+        Welcome_View wView = new Welcome_View();
+        Welcome_Model wModel = new Welcome_Model();
+        Welcome_Controller wController = new Welcome_Controller();
+
+        wModel.view = wView;
+        wModel.controller = wController;
+
+        wController.model = wModel;
+        wController.view = wView;
+
+        wView.model = wModel;
+        wView.controller = wController;
+        wView.start(welcome);
+        wModel.initialise("Welcome to the ATM");
+
+
+    }
+
+
+    public void createNewAccount(Stage CNA)
+    {
+        // Create Account Functionality container
+        //Bank b = new Bank();
+        Create_Model cModel = new Create_Model(b);
+        Create_View cView = new Create_View();
+        Create_Controller cController = new Create_Controller();
+
+        cModel.view = cView;
+        cModel.controller = cController;
+
+        cController.model = cModel;
+        cController.view = cView;
+
+        cView.model = cModel;
+        cView.controller = cController;
+        cView.start(new Stage());
+    }
+
+    public void banking(Stage window)
     {
         // set up debugging and print initial debugging message
         Debug.set(true);
@@ -20,15 +68,15 @@ public class Main extends Application
         Debug.trace("Main::start");
 
         // Create a Bank object for this ATM
-       Bank b = new Bank();
+       // Bank b = new Bank();
         // add some test bank accounts
         b.addBankAccount(10001, 11111, 100);
         b.addBankAccount(10002, 22222, 50);
 
         // Create the Model, View and Controller objects
         Model model = new Model(b);   // the model needs the Bank object to 'talk to' the bank
-        View  view  = new View();
-        Controller controller  = new Controller();
+        View view = new View();
+        Controller controller = new Controller();
 
 
         // Link them together, so they can talk to each other
@@ -49,45 +97,18 @@ public class Main extends Application
 
         // application is now running
         Debug.trace("atm running");
-
-        // Create Account Functionality container
-
-        Create_Model cModel = new Create_Model(b);
-        Create_View   cView  = new Create_View();
-        Create_Controller cController  = new Create_Controller();
-
-        cModel.view = cView;
-        cModel.controller = cController;
-
-        cController.model = cModel;
-        cController.view = cView;
-
-        cView.model = cModel;
-        cView.controller = cController;
-        cView.start(new Stage());
-
-        // Welcome page container
-
-        Welcome_View wView = new Welcome_View();
-        Welcome_Model wModel = new Welcome_Model();
-        Welcome_Controller wController = new Welcome_Controller();
-
-        wModel.view = wView;
-        wModel.controller = wController;
-
-        wController.model = wModel;
-        wController.view = wView;
-
-        wView.model = wModel;
-        wView.controller = wController;
-        wView.start(new Stage());
     }
 
-    public static void main( String args[])
+    public static void goodbye(Stage goodBye)
     {
-        // The main method only gets used when launching from the command line
-        // launch initialises the system and then calls start
-        // In BlueJ, BlueJ calls start itself
-        launch(args);
+        Goodbye view = new Goodbye();
+        Goodbye_Controller gController = new Goodbye_Controller();
+
+        view.controller = gController;
+
+        gController.view = view;
+        view.start(goodBye);
     }
+
+
 }

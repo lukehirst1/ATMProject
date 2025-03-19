@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 public class Welcome_View
 {
@@ -27,9 +28,11 @@ public class Welcome_View
 
     public Welcome_Controller controller;
     public Welcome_Model model;
+    public Main main = new Main();
 
     public void start(Stage window)
     {
+
         grid = new GridPane();
         grid.setId("Layout");            //assign an id to be used in css file
         buttonPane = new TilePane();
@@ -57,9 +60,9 @@ public class Welcome_View
 //        grid.add(accBalanceL, 1, 3);
 
         String labels[][] = {
-                {"Launch banking functionality", "", "", ""},
-                {"Create new account", "", "", "", ""},
-                {"EXIT", "", "", "", ""},
+                {"LNB", "GOO", "", ""},
+                {"CNA", "", "", "", ""},
+                {"EXT", "", "", "", ""},
                 {"", "", "", "", ""} };
 
         for ( String[] row: labels ) {
@@ -91,13 +94,29 @@ public class Welcome_View
     public void buttonClicked(ActionEvent event) {
         // this line asks the event to provide the actual Button object that was clicked
         Button b = ((Button) event.getSource());
-        //if ( controller != null )
-       // {
+        if ( controller != null )
+        {
             String label = b.getText();   // get the button label
             Debug.trace( "View::buttonClicked: label = "+ label );
             // Try setting a breakpoint here
             controller.process( label );  // Pass it to the controller's process method
-        //}
+        }
+    }
+
+    public void openBanking()
+
+    {
+        main.banking(new Stage());
+    }
+
+    public void createNewAccount()
+    {
+        main.createNewAccount(new Stage());
+    }
+
+    public void openGoodbye()
+    {
+        main.goodbye(new Stage());
     }
 
     public void update()
