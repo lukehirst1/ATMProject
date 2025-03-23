@@ -9,19 +9,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import java.io.File;
-
 import static java.lang.Thread.sleep;
 import static javafx.application.Platform.exit;
 
 public class Launch extends Application {
-
-    public String atm = "src/main/resources/atmBeep.wav";
-    public String welcome = "src/main/resources/WelcomeSound.wav";
-    public String goodbye = "src/main/resources/goodbye.wav";
 
     public static void main(String[] args) {
         launch(args);
@@ -45,8 +36,7 @@ public class Launch extends Application {
         iv.setPreserveRatio(true);
 
         // Play a welcome sound when launching
-        String welcomePath = "src/main/resources/WelcomeSound.wav";
-        new Main().PlaySound(welcomePath);
+        Main.mainHolder.PlaySound(Main.welcomeATM);
 
         VBox vbox = new VBox(10, btnLNB, btnCNA, btnEXT, iv);
         Scene scene = new Scene(vbox, 400, 450);
@@ -61,19 +51,21 @@ public class Launch extends Application {
         String label = b.getText(); // get the button label
         if(label == "Launch New Banking")
         {
-            new Main().banking(new Stage());
-            new Main().PlaySound(atm);
-            new Main().StopSound();
+            Main.mainHolder.banking(new Stage());
+            Main.mainHolder.PlaySound(Main.atm);
+            Main.mainHolder.PlaySound(Main.atmAC);
+            Main.mainHolder.StopSound();
         }
         if(label == "Create New Account"){
-            new Main().createNewAccount(new Stage());
-            new Main().StopSound();
-            new Main().PlaySound(atm);
+            Main.mainHolder.createNewAccount(new Stage());
+            Main.mainHolder.StopSound();
+            Main.mainHolder.PlaySound(Main.atm);
+            Main.mainHolder.PlaySound(Main.atmAC);
         }
         if (label== "Exit All"){
-            new Main().goodbye(new Stage());
-            new Main().PlaySound(goodbye);
-            new Main().StopSound();
+            Main.mainHolder.goodbye(new Stage());
+            Main.mainHolder.PlaySound(Main.atmGoodbye);
+            Main.mainHolder.StopSound();
             // Quits the application, regardless of how many windows are open.
             Platform.runLater(new Runnable() {
                 @Override

@@ -24,8 +24,6 @@ public class Goodbye_Controller
 //                break;
             case "QUT":
                 System.exit(20);
-                String atm = "src/main/resources/atmBeep.wav";
-                new Main().PlaySound(atm);
                 break;
 
 //            case "CAN":

@@ -12,8 +12,7 @@ public class Create_Controller
             case "1" : case "2" : case "3" : case "4" : case "5" :
             case "6" : case "7" : case "8" : case "9" : case "0" :
                 model.processNumbers(action);
-                String atm = "src/main/resources/atmBeep.wav";
-                new Main().PlaySound(atm);
+                Main.mainHolder.PlaySound(Main.atm);
                 break;
 
                 // REDUNDANT CODE, please do NOT USE - Luke
@@ -33,12 +32,14 @@ public class Create_Controller
 
             case "CAN":
                 model.cancelOperation();
+                Main.mainHolder.PlaySound(Main.atm);
                 break;
 //            case "CLR":
 //                model.processClear();
 //                break;
             case "Ent":
                 model.createAccount();
+                Main.mainHolder.PlaySound(Main.atmAC);
                 break;
             default:
 //                model.processUnknownKey(action);

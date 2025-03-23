@@ -27,6 +27,13 @@ public class Main
     Bank b = new Bank();
     public Boolean stopped = true;
     Clip clip;
+    long currentFrame;
+    String currentState;
+    public static Main mainHolder = new Main();
+    public static String atm = "src/main/resources/atmBeep.wav";
+    public static String welcomeATM = "src/main/resources/WelcomeSound.wav";
+    public static String atmGoodbye = "src/main/resources/goodbye.wav";
+    public static String atmAC = "src/main/resources/Action.wav";
 
     public void start(Stage welcome)
     {
@@ -53,14 +60,22 @@ public class Main
     {
         try
         {
+            // Is the clip not empty and running?
+            if (clip != null && clip.isRunning())
+            {
+                StopSound();
+            }
+
             File path = new File(location);
 
             if (path.exists())
             {
                 AudioInputStream audio = AudioSystem.getAudioInputStream(path);
-                clip = AudioSystem.getClip( );
+                clip = AudioSystem.getClip();
                 clip.open(audio);
                 clip.start();
+
+                currentState = "Playing";
             }
             else
             {
@@ -73,11 +88,23 @@ public class Main
         }
     }
 
+
     public void StopSound()
     {
-        if (clip != null && clip.isRunning())
+        try
         {
-            clip.stop();
+            // Is it not null or running?
+            if (clip != null && clip.isRunning())
+            {
+                currentFrame = 0L;
+                clip.stop();
+                clip.close();
+                currentState = "Stopped";
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
         }
     }
 
