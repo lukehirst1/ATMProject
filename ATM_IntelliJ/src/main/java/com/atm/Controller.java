@@ -1,6 +1,8 @@
 package com.atm;
 
 
+import javafx.stage.Stage;
+
 // The ATM controller is quite simple - the process method is passed
 // the label on the button that was pressed, and it calls different
 // methods in the model depending what was pressed.
@@ -8,6 +10,7 @@ public class Controller
 {
     public Model model;
     public View  view;
+    String atm = "src/main/resources/atmBeep.wav";
 
     // we don't really need a constructor method, but include one to print a
     // debugging message if required
@@ -28,29 +31,38 @@ public class Controller
             case "1" : case "2" : case "3" : case "4" : case "5" :
             case "6" : case "7" : case "8" : case "9" : case "0" :
                 model.processNumber(action);
+                new Main().PlaySound(atm);
                 break;
             case "CLR":
                 model.processClear();
+                new Main().PlaySound(atm);
                 break;
             case "Ent":
                 model.processEnter();
+                new Main().PlaySound(atm);
                 break;
             case "W/D":
                 model.processWithdraw();
+                new Main().PlaySound(atm);
                 break;
             case "Dep":
                 model.processDeposit();
+                new Main().PlaySound(atm);
                 break;
             case "Bal":
                 model.processBalance();
+                new Main().PlaySound(atm);
                 break;
             case "Fin":
                 model.processFinish();
+                new Main().PlaySound(atm);
                 break;
             case "C/P":
                 model.processPassword();
+                new Main().PlaySound(atm);
                 break;
             case "CNA":
+                new Main().createNewAccount(new Stage());
                 break;
             default:
                 model.processUnknownKey(action);

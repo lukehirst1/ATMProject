@@ -108,6 +108,8 @@ public class View
         scene.getStylesheets().add("atm.css"); // tell the app to use our css file
         window.setScene(scene);
         window.setTitle("Welcome to the ATM");
+        window.setX(1200);
+        window.setY(200);
         window.show();
     }
 

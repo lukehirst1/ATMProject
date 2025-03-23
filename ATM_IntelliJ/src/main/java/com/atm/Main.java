@@ -1,7 +1,19 @@
 package com.atm;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.plaf.IconUIResource;
+import java.io.File;
+
+import static javafx.application.Platform.exit;
 
 // atm project Main class
 // The code here creates the ATM GUI interface and model functionality, but the methods
@@ -10,9 +22,14 @@ import javafx.stage.Stage;
 // then add further functionality/features
 // Tutors may not help directly with coding but will give you guidance
 
-public class Main extends Application
+public class Main
 {
-    public void start(Stage welcome) {
+    Bank b = new Bank();
+    public Boolean stopped = true;
+    Clip clip;
+
+    public void start(Stage welcome)
+    {
 
         Welcome_View wView = new Welcome_View();
         Welcome_Model wModel = new Welcome_Model();
@@ -28,12 +45,47 @@ public class Main extends Application
         wView.controller = wController;
         wView.start(welcome);
         wModel.initialise("Welcome to the ATM");
+
+
     }
+
+    public void PlaySound(String location)
+    {
+        try
+        {
+            File path = new File(location);
+
+            if (path.exists())
+            {
+                AudioInputStream audio = AudioSystem.getAudioInputStream(path);
+                clip = AudioSystem.getClip( );
+                clip.open(audio);
+                clip.start();
+            }
+            else
+            {
+                Debug.error("Can't find file");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.trace(String.valueOf(e));
+        }
+    }
+
+    public void StopSound()
+    {
+        if (clip != null && clip.isRunning())
+        {
+            clip.stop();
+        }
+    }
+
 
     public void createNewAccount(Stage CNA)
     {
         // Create Account Functionality container
-        Bank b = new Bank();
+        //Bank b = new Bank();
         Create_Model cModel = new Create_Model(b);
         Create_View cView = new Create_View();
         Create_Controller cController = new Create_Controller();
@@ -57,7 +109,7 @@ public class Main extends Application
         Debug.trace("Main::start");
 
         // Create a Bank object for this ATM
-        Bank b = new Bank();
+       // Bank b = new Bank();
         // add some test bank accounts
         b.addBankAccount(10001, 11111, 100);
         b.addBankAccount(10002, 22222, 50);
@@ -88,16 +140,16 @@ public class Main extends Application
         Debug.trace("atm running");
     }
 
-    public void goodbye()
+    public static void goodbye(Stage goodBye)
     {
+        Goodbye view = new Goodbye();
+        Goodbye_Controller gController = new Goodbye_Controller();
 
+        view.controller = gController;
+
+        gController.view = view;
+        view.start(goodBye);
     }
 
-    public static void main( String args[])
-    {
-        // The main method only gets used when launching from the command line
-        // launch initialises the system and then calls start
-        // In BlueJ, BlueJ calls start itself
-        launch(args);
-    }
+
 }

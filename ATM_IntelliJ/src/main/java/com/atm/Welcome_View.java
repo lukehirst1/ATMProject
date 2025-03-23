@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 public class Welcome_View
 {
@@ -31,6 +32,7 @@ public class Welcome_View
 
     public void start(Stage window)
     {
+
         grid = new GridPane();
         grid.setId("Layout");            //assign an id to be used in css file
         buttonPane = new TilePane();
@@ -58,9 +60,9 @@ public class Welcome_View
 //        grid.add(accBalanceL, 1, 3);
 
         String labels[][] = {
-                {"Launch banking functionality", "", "", ""},
-                {"Create new account", "", "", "", ""},
-                {"EXIT", "", "", "", ""},
+                {"LNB", "GOO", "", ""},
+                {"CNA", "", "", "", ""},
+                {"EXT", "", "", "", ""},
                 {"", "", "", "", ""} };
 
         for ( String[] row: labels ) {
@@ -102,6 +104,7 @@ public class Welcome_View
     }
 
     public void openBanking()
+
     {
         main.banking(new Stage());
     }
@@ -109,6 +112,11 @@ public class Welcome_View
     public void createNewAccount()
     {
         main.createNewAccount(new Stage());
+    }
+
+    public void openGoodbye()
+    {
+        main.goodbye(new Stage());
     }
 
     public void update()
