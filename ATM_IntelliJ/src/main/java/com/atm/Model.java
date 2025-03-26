@@ -1,6 +1,8 @@
 package com.atm;
 
 
+import javafx.stage.Stage;
+
 // The model represents all the actual content and functionality of the app
 // For the ATM, it keeps track of the information shown in the display
 // (the title and two message boxes), and the interaction with the bank, executes
@@ -22,6 +24,7 @@ public class Model
     Bank  bank = null;              // The ATM talks to a bank, represented by the Bank object.
     int accNumber = -1;             // Account number typed in
     int accPasswd = -1;             // Password typed in
+    String receipt;
     // These three are what are shown on the View display
     String title = "Bank ATM";      // The contents of the title message
     String display1 = null;         // The contents of the Message 1 box (a single line)
@@ -100,6 +103,7 @@ public class Model
             initialise("You are not logged in");
         }
     }
+
 
     // process the Enter button
     // this is the most complex operation - the Enter key causes the ATM to change state
@@ -191,6 +195,21 @@ public class Model
             initialise("You are not logged in");
         }
         display();  // update the GUI
+    }
+    // Prints the receipt - Checks if the user is logged in, and accesses the initial balance.
+    public void processReceipt()
+    {
+        if (state.equals(LOGGED_IN))
+        {
+            bank.processReceipt();
+            display2 = "Initial balance is: " + bank.getStartBal();
+            Main.mainHolder.printed(new Stage());
+        }
+        else
+        {
+            initialise("You are not logged in.");
+        }
+        display();
     }
 
     // Finish button - check we are logged in and if so log out

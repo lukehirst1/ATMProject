@@ -25,15 +25,14 @@ import static javafx.application.Platform.exit;
 public class Main
 {
     Bank b = new Bank();
-    public Boolean stopped = true;
     Clip clip;
     long currentFrame;
     String currentState;
-    public static Main mainHolder = new Main();
-    public static String atm = "src/main/resources/atmBeep.wav";
-    public static String welcomeATM = "src/main/resources/WelcomeSound.wav";
-    public static String atmGoodbye = "src/main/resources/goodbye.wav";
-    public static String atmAC = "src/main/resources/Action.wav";
+    protected static Main mainHolder = new Main();
+    protected static String atm = "src/main/resources/atmBeep.wav";
+    protected static String welcomeATM = "src/main/resources/WelcomeSound.wav";
+    protected static String atmGoodbye = "src/main/resources/goodbye.wav";
+    protected static String atmAC = "src/main/resources/Action.wav";
 
     public void start(Stage welcome)
     {
@@ -178,5 +177,13 @@ public class Main
         view.start(goodBye);
     }
 
+    public static void printed(Stage print)
+    {
+        Receipts view = new Receipts();
+
+        view.start(print);
+    }
+
+    // Add transfer functionality (new window required).
 
 }

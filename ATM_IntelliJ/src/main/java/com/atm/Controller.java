@@ -65,6 +65,10 @@ public class Controller
                 Main.mainHolder.PlaySound(Main.atm);
                 Main.mainHolder.PlaySound(Main.atmAC);;
                 break;
+            case "STA":
+                model.processReceipt();
+                Main.mainHolder.PlaySound(Main.atm);
+                break;
             default:
                 model.processUnknownKey(action);
                 break;

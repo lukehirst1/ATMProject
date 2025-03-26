@@ -18,7 +18,6 @@ public class Bank
     // Instance variables containing the bank information
     ArrayList<BankAccount> accounts = new ArrayList<>();  // array to hold the bank accounts
     BankAccount account = null;  // currently logged in account ('null' if no-one is logged in)
-    protected TreeMap<String, String> bAccounts;
 
     // Constructor method - this provides a couple of example bank accounts to work with
     public Bank()
@@ -59,6 +58,20 @@ public class Bank
         else
         {
             Debug.trace("Bank::changePassword: cannot change password.");
+            return false;
+        }
+    }
+
+    public boolean processReceipt()
+    {
+        if (loggedIn())
+        {
+            account.printStatement();
+            return true;
+        }
+        else
+        {
+            Debug.trace("Bank::printReceipt: cannot print receipt.");
             return false;
         }
     }
@@ -155,6 +168,18 @@ public class Bank
             return account.withdraw(amount);
         } else {
             return false;
+        }
+    }
+
+    public int getStartBal()
+    {
+        if (loggedIn())
+        {
+            return account.getStartBal();
+        }
+        else
+        {
+            return -1;
         }
     }
 

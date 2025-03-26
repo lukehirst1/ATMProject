@@ -80,7 +80,7 @@ public class View
         // the css file
         String labels[][] = {
                 {"7",    "8",  "9",  "",  "Dep",  "C/P"},
-                {"4",    "5",  "6",  "",  "W/D",  ""},
+                {"4",    "5",  "6",  "",  "W/D",  "STA"},
                 {"1",    "2",  "3",  "",  "Bal",  "Fin"},
                 {"CLR",  "0",  "",   "",  "CNA",     "Ent"} };
 
