@@ -33,6 +33,7 @@ public class Model
     // The other parts of the model-view-controller setup
     public View view;
     public Controller controller;
+    public Receipts rView;
 
     // Model constructor - we pass it a Bank object representing the bank we want to talk to
     public Model(Bank b)
@@ -201,9 +202,11 @@ public class Model
     {
         if (state.equals(LOGGED_IN))
         {
-            bank.processReceipt();
-            display2 = "Initial balance is: " + bank.getStartBal();
-            Main.mainHolder.printed(new Stage());
+            display2 = "Please input the number of statements you would like to print.";
+            if (bank.processReceipt(number))
+            {
+                initialise("Printed " + number + "Statements");
+            }
         }
         else
         {

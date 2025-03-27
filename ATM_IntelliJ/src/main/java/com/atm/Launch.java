@@ -30,6 +30,9 @@ public class Launch extends Application {
 
         btnEXT.setOnAction(this::buttonClicked);
 
+        Button btnPRI = new Button("Print Statements");
+        btnPRI.setOnAction(this::buttonClicked);
+
         // make an imageView, add to vbox
         ImageView iv = new ImageView("atmWelcomePage.pNG");
         iv.setFitWidth(400);
@@ -38,7 +41,7 @@ public class Launch extends Application {
         // Play a welcome sound when launching
         Main.mainHolder.PlaySound(Main.welcomeATM);
 
-        VBox vbox = new VBox(10, btnLNB, btnCNA, btnEXT, iv);
+        VBox vbox = new VBox(10, btnLNB, btnCNA, btnEXT, btnPRI, iv);
         Scene scene = new Scene(vbox, 400, 450);
         window.setScene(scene);
         window.setTitle("welcome to using ATM");
@@ -49,36 +52,44 @@ public class Launch extends Application {
         // this line asks the event to provide the actual Button object that was clicked
         Button b = ((Button) event.getSource());
         String label = b.getText(); // get the button label
-        if(label == "Launch New Banking")
-        {
-            Main.mainHolder.banking(new Stage());
-            Main.mainHolder.PlaySound(Main.atm);
-            Main.mainHolder.PlaySound(Main.atmAC);
-            Main.mainHolder.StopSound();
-        }
-        if(label == "Create New Account"){
-            Main.mainHolder.createNewAccount(new Stage());
-            Main.mainHolder.StopSound();
-            Main.mainHolder.PlaySound(Main.atm);
-            Main.mainHolder.PlaySound(Main.atmAC);
-        }
-        if (label== "Exit All"){
-            Main.mainHolder.goodbye(new Stage());
-            Main.mainHolder.PlaySound(Main.atmGoodbye);
-            Main.mainHolder.StopSound();
-            // Quits the application, regardless of how many windows are open.
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    exit();
-                }
-            });
 
+        switch (label)
+        {
+            case "Launch New Banking":
+            {
+                Main.mainHolder.banking(new Stage());
+                Main.mainHolder.PlaySound(Main.atm);
+                Main.mainHolder.PlaySound(Main.atmAC);
+                Main.mainHolder.StopSound();
+                break;
+            }
+            case "Create New Account":
+            {
+                Main.mainHolder.createNewAccount(new Stage());
+                Main.mainHolder.StopSound();
+                Main.mainHolder.PlaySound(Main.atm);
+                Main.mainHolder.PlaySound(Main.atmAC);
+                break;
+            }
+            case "Exit All":
+            {
+                Main.mainHolder.goodbye(new Stage());
+                Main.mainHolder.PlaySound(Main.atmGoodbye);
+                Main.mainHolder.StopSound();
+                // Quits the application, regardless of how many windows are open.
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        exit();
+                    }
+                });
+                break;
+            }
         }
     }
 

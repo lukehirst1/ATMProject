@@ -18,6 +18,7 @@ public class Bank
     // Instance variables containing the bank information
     ArrayList<BankAccount> accounts = new ArrayList<>();  // array to hold the bank accounts
     BankAccount account = null;  // currently logged in account ('null' if no-one is logged in)
+    BankAccount currentAccount = null;
 
     // Constructor method - this provides a couple of example bank accounts to work with
     public Bank()
@@ -62,12 +63,12 @@ public class Bank
         }
     }
 
-    public boolean processReceipt()
+    // Print off however many receipts
+    public boolean processReceipt(int amount)
     {
         if (loggedIn())
         {
-            account.printStatement();
-            return true;
+            return account.printStatement(amount);
         }
         else
         {

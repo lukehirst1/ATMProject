@@ -1,7 +1,10 @@
 package com.atm;
 
-import java.util.Scanner;
+import javafx.stage.Stage;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 // BankAccount class
 // This class has instance variables for the account number, password and balance, and methods
@@ -28,7 +31,20 @@ public class BankAccount
     public int withdrawVal = 0;
     public int depositVal = 0;
     protected String receipt;
+    protected int printAmount;
     LocalDateTime dateT = LocalDateTime.now();
+    protected List<String> transactions = new ArrayList<>();
+    protected String[] statement;
+
+    public void getTranscations()
+    {
+        statement = new String[transactions.size()];
+
+        for (int i = 0; i < transactions.size(); i++)
+        {
+            statement[i] = transactions.get(i);
+        }
+    }
 
     public BankAccount() { // an empty constructor
 
@@ -95,6 +111,19 @@ public class BankAccount
         }
     }
 
+    public boolean lowBalWarn()
+    {
+        if (balance <= 20)
+        {
+            // Warn the user about a low balance.
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     // deposit the amount of money into the account. Return true if successful,
     // or false if the amount is negative
     public boolean deposit( int amount )
@@ -128,6 +157,12 @@ public class BankAccount
         }
     }
 
+    /**
+     * Checks if the accNumber is not a number that already exists, and allows the account number to be used.
+     * @param number
+     * @return
+     */
+
     public boolean processNumber(int number)
     {
         if (accNumber != number)
@@ -142,15 +177,24 @@ public class BankAccount
             return false;
         }
     }
+    /**
+     * Finds all of the information about the bank account, and then prints off all transactions. It can also print off any amount of statements into the Receipts folder.
+     */
 
-    public boolean printStatement()
+    public boolean printStatement(int amount)
     {
-        // Next steps: Add account number to the receipt.
-        receipt = "************************ \n ************************\n Statement generated at: " + dateT + "\n Initial Balance: " + startBal +
-              "\n Current Balance now: " + balance + "\n Withdrawn: " + withdrawVal + "\n Deposited: " + depositVal + "\n Thank you for banking with us today!"
-        + "\n ************************ \n ************************";
-        System.out.println(receipt);
-        return true;
+        for (int i = 0; i < amount; i++)
+        {
+            receipt = "************************ \n ************************\n Statement generated at: " + dateT  +  "\n Account Number: " + accNumber + "\n Initial Balance: " + startBal +
+                    "\n Current Balance now: " + balance + "\n Withdrawn: " + withdrawVal + "\n Deposited: " + depositVal + "\n Thank you for banking with us today!"
+                    + "\n ************************ \n ************************" + "\n -------------------------------------------------";
+            transactions.add(receipt);
+            System.out.println(transactions);
+            getTranscations();
+            printAmount++;
+            Main.mainHolder.printed(new Stage());
+        }
+        return false;
     }
 
     // Returns the initial balance in the account
