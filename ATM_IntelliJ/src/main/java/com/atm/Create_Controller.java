@@ -39,7 +39,7 @@ public class Create_Controller
 //                break;
             case "Ent":
                 model.createAccount();
-                Main.mainHolder.PlaySound(Main.atmAC);
+                Main.mainHolder.PlaySound(Main.atm);
                 break;
             default:
 //                model.processUnknownKey(action);

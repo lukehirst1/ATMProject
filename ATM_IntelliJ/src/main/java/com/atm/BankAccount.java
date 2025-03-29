@@ -25,7 +25,6 @@ public class BankAccount
     public int withdrawalLimit = 5000;
     public int higherWithdrawalLimit = 10000;
     public int overdraftLimit = 1500;
-    public boolean isPremium;
     public boolean canOverdraft;
     public boolean canHigherWD;
     public int withdrawVal = 0;
@@ -77,8 +76,10 @@ public class BankAccount
 //            return false;
 //        }
 
-        if (isPremium && canOverdraft && canHigherWD)
+        if (Main.mainHolder.isPremium)
         {
+            canOverdraft = true;
+            canHigherWD = true;
             if ((balance - amount) < -overdraftLimit)
             {
                 Debug.error("Overdraft exceeded");
@@ -92,14 +93,23 @@ public class BankAccount
             else
             {
                 balance = balance - amount;
+                withdrawVal = amount;
                 return true;
             }
         }
         else
         {
+            canOverdraft = false;
+            canHigherWD = false;
             if (amount > withdrawalLimit)
             {
                 Debug.error("Over withdrawal limit");
+                return false;
+            }
+
+            if (((balance - amount) < 0))
+            {
+                Debug.error("CANNOT OVERDRAFT");
                 return false;
             }
             else
@@ -111,11 +121,13 @@ public class BankAccount
         }
     }
 
-    public boolean lowBalWarn()
+    public boolean lowBal()
     {
-        if (balance <= 20)
+        if (balance < 20 && !canOverdraft)
         {
             // Warn the user about a low balance.
+            Main.mainHolder.warning(new Stage());
+            Debug.trace("WARNING: YOUR BALANCE IS LOW.");
             return true;
         }
         else

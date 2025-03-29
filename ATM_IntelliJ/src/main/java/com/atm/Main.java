@@ -29,10 +29,12 @@ public class Main
     long currentFrame;
     String currentState;
     protected static Main mainHolder = new Main();
+    protected static Model model;
     protected static String atm = "src/main/resources/atmBeep.wav";
     protected static String welcomeATM = "src/main/resources/WelcomeSound.wav";
     protected static String atmGoodbye = "src/main/resources/goodbye.wav";
     protected static String atmAC = "src/main/resources/Action.wav";
+    protected boolean isPremium = false;
 
     public void start(Stage welcome)
     {
@@ -183,6 +185,20 @@ public class Main
 
         view.start(print);
     }
+
+    public static void warning(Stage warn)
+    {
+        lowBalWarn bal = new lowBalWarn();
+
+        bal.start(warn);
+    }
+
+//    public static void transferMoney(Stage transfer)
+//    {
+//        TransferController money = new TransferController();
+//
+//        money.start(transfer);
+//    }
 
     // Add transfer functionality (new window required).
 

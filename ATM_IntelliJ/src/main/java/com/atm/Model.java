@@ -192,6 +192,11 @@ public class Model
         if (state.equals(LOGGED_IN) ) {
             number = 0;
             display2 = "Your balance is: " + bank.getBalance();
+            if (bank.getBalance() < 20)
+            {
+                display2 = "Your balance is: " + bank.getBalance();
+                bank.account.lowBal();
+            }
         } else {
             initialise("You are not logged in");
         }

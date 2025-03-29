@@ -9,16 +9,14 @@ package com.atm;
 // working in lab sessions.
 
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 // If you choose the ATM for your project, you should make other modifications to
 // the system yourself, based on similar examples we will cover in lectures and labs.
 public class Bank
 {
     // Instance variables containing the bank information
-    ArrayList<BankAccount> accounts = new ArrayList<>();  // array to hold the bank accounts
+    protected ArrayList<BankAccount> accounts = new ArrayList<>();  // array to hold the bank accounts
     BankAccount account = null;  // currently logged in account ('null' if no-one is logged in)
-    BankAccount currentAccount = null;
 
     // Constructor method - this provides a couple of example bank accounts to work with
     public Bank()
@@ -63,7 +61,11 @@ public class Bank
         }
     }
 
-    // Print off however many receipts
+    /**
+     * Prints off however many receipts.
+     * @param amount
+     * @return
+     */
     public boolean processReceipt(int amount)
     {
         if (loggedIn())
@@ -73,6 +75,19 @@ public class Bank
         else
         {
             Debug.trace("Bank::printReceipt: cannot print receipt.");
+            return false;
+        }
+    }
+
+    public boolean processWarn()
+    {
+        if (loggedIn() && account.balance <= 20)
+        {
+            return account.lowBal();
+        }
+        else
+        {
+            Debug.trace("Bank::processWarn: Balance is fine.");
             return false;
         }
     }

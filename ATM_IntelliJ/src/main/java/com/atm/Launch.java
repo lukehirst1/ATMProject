@@ -30,9 +30,6 @@ public class Launch extends Application {
 
         btnEXT.setOnAction(this::buttonClicked);
 
-        Button btnPRI = new Button("Print Statements");
-        btnPRI.setOnAction(this::buttonClicked);
-
         // make an imageView, add to vbox
         ImageView iv = new ImageView("atmWelcomePage.pNG");
         iv.setFitWidth(400);
@@ -41,7 +38,7 @@ public class Launch extends Application {
         // Play a welcome sound when launching
         Main.mainHolder.PlaySound(Main.welcomeATM);
 
-        VBox vbox = new VBox(10, btnLNB, btnCNA, btnEXT, btnPRI, iv);
+        VBox vbox = new VBox(10, btnLNB, btnCNA, btnEXT, iv);
         Scene scene = new Scene(vbox, 400, 450);
         window.setScene(scene);
         window.setTitle("welcome to using ATM");
