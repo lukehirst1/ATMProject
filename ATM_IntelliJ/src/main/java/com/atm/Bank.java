@@ -17,6 +17,8 @@ public class Bank
     // Instance variables containing the bank information
     protected ArrayList<BankAccount> accounts = new ArrayList<>();  // array to hold the bank accounts
     BankAccount account = null;  // currently logged in account ('null' if no-one is logged in)
+    BankAccount account2 = null;
+    protected boolean checked = false;
 
     // Constructor method - this provides a couple of example bank accounts to work with
     public Bank()
@@ -88,6 +90,33 @@ public class Bank
         else
         {
             Debug.trace("Bank::processWarn: Balance is fine.");
+            return false;
+        }
+    }
+
+    public boolean processTransfer(int amount)
+    {
+        if (accounts.contains(account) && accounts.contains(account2))
+        {
+            return account2.transferMoney(amount);
+        }
+        else
+        {
+            Debug.trace("Bank::processTransfer: Invalid account.");
+            return false;
+        }
+    }
+
+    public boolean processCheck()
+    {
+        if(accounts.contains(account))
+        {
+            checked = true;
+            return true;
+        }
+        else
+        {
+            Debug.trace("Bank::processCheck: Account not in ArrayList. Have you entered the right accNumber?");
             return false;
         }
     }

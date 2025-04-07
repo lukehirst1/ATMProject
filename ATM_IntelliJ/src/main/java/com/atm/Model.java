@@ -159,6 +159,7 @@ public class Model
             if ( bank.withdraw( number ) )
             {
                 display2 =   "Withdrawn: " + number;
+                // Show updated balance
             } else {
                 display2 =   "You do not have sufficient funds";
             }
@@ -179,6 +180,7 @@ public class Model
             display1 = "";
             display2 = "Deposited: " + number;
             number = 0;
+            // Show updated balance
         } else {
             initialise("You are not logged in");
         }

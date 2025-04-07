@@ -63,7 +63,12 @@ public class Controller
             case "CNA":
                 Main.mainHolder.createNewAccount(new Stage());
                 Main.mainHolder.PlaySound(Main.atm);
-                Main.mainHolder.PlaySound(Main.atmAC);;
+                Main.mainHolder.PlaySound(Main.atmAC);
+                break;
+            case "Tra":
+                Main.mainHolder.transferMoney(new Stage());
+                Main.mainHolder.PlaySound(Main.atm);
+                Main.mainHolder.PlaySound(Main.atmAC);
                 break;
             case "STA":
                 model.processReceipt();

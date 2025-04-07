@@ -11,9 +11,11 @@ import javafx.stage.Stage;
 
 public class lowBalWarn
 {
+    public Button btnWarn;
+
     public void start(Stage window)
     {
-        Button btnWarn = new Button("Okay");
+        btnWarn = new Button("Okay");
         btnWarn.setOnAction(this::buttonClicked);
         TextField warn = new TextField("Your balance is running low. Please top your account up soon.");
         warn.setEditable(false);
@@ -31,7 +33,8 @@ public class lowBalWarn
 
         if (label.equals("Okay"))
         {
-            // close window.
+            Stage stage = (Stage) btnWarn.getScene().getWindow();
+            stage.close();
         }
     }
 

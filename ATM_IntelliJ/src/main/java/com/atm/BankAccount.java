@@ -19,6 +19,7 @@ public class BankAccount
 {
     // Integers and booleans for the BankAccount constructor.
     public int accNumber = 0;
+    public int accNumber2 = 0;
     public int accPasswd = 0;
     public int balance;
     public int startBal;
@@ -118,6 +119,25 @@ public class BankAccount
                 withdrawVal = amount;
                 return true;
             }
+        }
+    }
+
+//    public boolean CheckBal()
+//    {
+//        // TO DO: Check the balance
+//    }
+
+    public boolean transferMoney(int amount)
+    {
+        if (accNumber2 != accNumber)
+        {
+            Debug.error("The accounts do not match, or do not exist.");
+            return false;
+        }
+        else
+        {
+            balance = balance + amount;
+            return true;
         }
     }
 

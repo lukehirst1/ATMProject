@@ -26,7 +26,7 @@ public class Create_Controller
 //                model.processFinish();
 //                break;
 
-            case "EXIT":
+            case "EXT":
                 model.quitApplication();
                 break;
 

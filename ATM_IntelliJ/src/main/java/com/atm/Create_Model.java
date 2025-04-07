@@ -51,6 +51,7 @@ public class Create_Model extends Bank
                 Debug.trace("Premium account created!");
                 Main.mainHolder.isPremium = true;
                 Main.mainHolder.b.accounts.add(account);
+                Main.mainHolder.saveFile();
             }
             else if (!view.premium.isSelected())
             {
@@ -58,6 +59,7 @@ public class Create_Model extends Bank
                 Debug.trace("Basic account created!");
                 Main.mainHolder.isPremium = false;
                 Main.mainHolder.b.accounts.add(account);
+                Main.mainHolder.saveFile();
             }
         }
         else if (addNumber.length() != 5 || addPasswd.length() != 5)

@@ -1,17 +1,12 @@
 package com.atm;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.plaf.IconUIResource;
 import java.io.File;
+import java.io.FileWriter;
 
 import static javafx.application.Platform.exit;
 
@@ -24,7 +19,7 @@ import static javafx.application.Platform.exit;
 
 public class Main
 {
-    Bank b = new Bank();
+    protected static Bank b = new Bank();
     Clip clip;
     long currentFrame;
     String currentState;
@@ -35,6 +30,7 @@ public class Main
     protected static String atmGoodbye = "src/main/resources/goodbye.wav";
     protected static String atmAC = "src/main/resources/Action.wav";
     protected boolean isPremium = false;
+    File info = new File("atmUsers.txt");
 
     public void start(Stage welcome)
     {
@@ -57,6 +53,10 @@ public class Main
 
     }
 
+    /**
+     * Plays a specified sound from the path location.
+     * @param location
+     */
     public void PlaySound(String location)
     {
         try
@@ -89,7 +89,9 @@ public class Main
         }
     }
 
-
+    /**
+     * Stops the existing sound from running
+     */
     public void StopSound()
     {
         try
@@ -107,6 +109,34 @@ public class Main
         {
             System.out.println(e);
         }
+    }
+
+    /**
+     * Saves the ArrayList into a file, which is later read by the ATM.
+     */
+    public void saveFile()
+    {
+        try
+        {
+            FileWriter atmWrite = new FileWriter(info);
+            for (BankAccount value : b.accounts)
+            {
+                atmWrite.write(value.toString());
+            }
+            atmWrite.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * Loads the file from the cloud, and opens it onto the ATM.
+     */
+    public void loadFile()
+    {
+
     }
 
 
@@ -193,13 +223,27 @@ public class Main
         bal.start(warn);
     }
 
-//    public static void transferMoney(Stage transfer)
-//    {
-//        TransferController money = new TransferController();
-//
-//        money.start(transfer);
-//    }
+    /**
+     * Responsible for transferring money between accounts.
+     */
 
-    // Add transfer functionality (new window required).
+    public void transferMoney(Stage transfer)
+    {
+          Transfer_Model tModel = new Transfer_Model(b);
+          Transfer_Controller tController = new Transfer_Controller();
+          Transfer_View tView = new Transfer_View();
+
+          tModel.view = tView;
+          tModel.controller = tController;
+
+          tView.model = tModel;
+          tView.controller = tController;
+
+          tController.model = tModel;
+          tController.view = tView;
+
+          tView.start(transfer);
+    }
+
 
 }
