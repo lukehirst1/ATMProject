@@ -5,8 +5,8 @@ import javafx.stage.Stage;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
+import java.util.ArrayList;
 
 import static javafx.application.Platform.exit;
 
@@ -29,8 +29,8 @@ public class Main
     protected static String welcomeATM = "src/main/resources/WelcomeSound.wav";
     protected static String atmGoodbye = "src/main/resources/goodbye.wav";
     protected static String atmAC = "src/main/resources/Action.wav";
+    protected static String name;
     protected boolean isPremium = false;
-    File info = new File("atmUsers.txt");
 
     public void start(Stage welcome)
     {
@@ -111,34 +111,6 @@ public class Main
         }
     }
 
-    /**
-     * Saves the ArrayList into a file, which is later read by the ATM.
-     */
-    public void saveFile()
-    {
-        try
-        {
-            FileWriter atmWrite = new FileWriter(info);
-            for (BankAccount value : b.accounts)
-            {
-                atmWrite.write(value.toString());
-            }
-            atmWrite.close();
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
-    }
-
-    /**
-     * Loads the file from the cloud, and opens it onto the ATM.
-     */
-    public void loadFile()
-    {
-
-    }
-
 
     public void createNewAccount(Stage CNA)
     {
@@ -176,6 +148,15 @@ public class Main
         Model model = new Model(b);   // the model needs the Bank object to 'talk to' the bank
         View view = new View();
         Controller controller = new Controller();
+
+        if (b.info.exists())
+        {
+            b.loadFile();
+        }
+        else
+        {
+            Debug.error("Failed to open" + b.info);
+        }
 
 
         // Link them together, so they can talk to each other
@@ -244,6 +225,4 @@ public class Main
 
           tView.start(transfer);
     }
-
-
 }

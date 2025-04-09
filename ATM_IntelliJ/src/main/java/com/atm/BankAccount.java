@@ -2,6 +2,7 @@ package com.atm;
 
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 
 // If you choose the ATM for your project, you should make other modifications to
 // the system yourself, based on similar examples we will cover in lectures and labs.
-public class BankAccount
+public class BankAccount implements Serializable
 {
     // Integers and booleans for the BankAccount constructor.
     public int accNumber = 0;
@@ -32,7 +33,7 @@ public class BankAccount
     public int depositVal = 0;
     protected String receipt;
     protected int printAmount;
-    LocalDateTime dateT = LocalDateTime.now();
+    protected LocalDateTime dateT = LocalDateTime.now();
     protected List<String> transactions = new ArrayList<>();
     protected String[] statement;
 

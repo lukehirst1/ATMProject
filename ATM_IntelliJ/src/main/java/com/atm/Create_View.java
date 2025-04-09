@@ -65,7 +65,7 @@ public class Create_View
                 {"7",    "8",  "9",  "",  "",  ""},
                 {"4",    "5",  "6",  "",  "",  ""},
                 {"1",    "2",  "3",  "",  "CAN",  ""},
-                {"",  "0",  "",   "",  "EXIT",     "Ent"} };
+                {"",  "0",  "",   "",  "EXT",     "Ent"} };
 
         for ( String[] row: labels ) {
             for (String label: row) {

@@ -21,7 +21,6 @@ public class Launch extends Application {
     @Override
     public void start(Stage window) {
 
-
         Button btnLNB = new Button("Launch New Banking");
         btnLNB.setOnAction(this::buttonClicked);
         Button btnCNA = new Button("Create New Account");

@@ -1,11 +1,15 @@
 package com.atm;
 
+import javafx.application.Platform;
+import javafx.stage.Stage;
+
+import static javafx.application.Platform.exit;
+
 public class Transfer_Model
 {
     // The container objects for this class.
     public Transfer_Controller controller;
     public Transfer_View view;
-    Bank bank = null;
 
     String title = "Transfer money between accounts";
     int number = 0;
@@ -16,7 +20,7 @@ public class Transfer_Model
     public Transfer_Model(Bank b)
     {
         Debug.trace("Model::<constructor>");
-        bank = b;
+        Main.mainHolder.b = b;
     }
 
     public void initialise(String message)
@@ -32,9 +36,9 @@ public class Transfer_Model
 
         if (!view.accNumber.getText().isEmpty())
         {
-            bank.processCheck();
+            Main.mainHolder.b.processCheck();
 
-            if (bank.checked)
+            if (Main.mainHolder.b.checked)
             {
                 view.tranAccountBalL.setText("Account Balance: ");
                 view.tranAccountBal.setVisible(true);
@@ -55,7 +59,7 @@ public class Transfer_Model
 
         if (!view.accNumber.getText().isEmpty() && !view.tranAccountBal.getText().isEmpty())
         {
-            bank.processTransfer(monAmount);
+            Main.mainHolder.b.processTransfer(monAmount);
         }
         else if (view.accNumber.getText().isEmpty() && view.tranAccountBal.getText().isEmpty())
         {
@@ -72,7 +76,21 @@ public class Transfer_Model
 
     public void quitApplication()
     {
-        System.exit(0);
+        Main.mainHolder.goodbye(new Stage());
+        Main.mainHolder.PlaySound(Main.atmGoodbye);
+        Main.mainHolder.StopSound();
+        // Quits the application, regardless of how many windows are open.
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                exit();
+            }
+        });
     }
 
     public void processNumbers(String label)

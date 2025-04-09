@@ -1,5 +1,10 @@
 package com.atm;
 
+import javafx.application.Platform;
+import javafx.stage.Stage;
+
+import static javafx.application.Platform.exit;
+
 public class Create_Model extends Bank
 {
     public Create_View view;
@@ -37,44 +42,73 @@ public class Create_Model extends Bank
                 "Followed by \"Ent\"";
     }
 
+    /**
+     * Responsible for creating a new bank account, and saving it into an arraylist, which is then saved into a .dat file.
+     */
     public void createAccount()
     {
         String addNumber = view.accNumber.getText();
         String addPasswd = view.accPasswd.getText();
         String balance = view.accBalance.getText();
 
+        // is the AddNumber, addPasswd and balance textfields NOT empty?
         if (!view.accNumber.getText().isEmpty() && !view.accPasswd.getText().isEmpty() && !view.accBalance.getText().isEmpty())
         {
+            // Is the premium checkbox ticked?
             if (view.premium.isSelected())
             {
-                bank.addBankAccount(makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance)));
+                // Creates a new bank account, saves it to an arraylist, then saves it to atmUsers.dat
+                BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
+                bank.addBankAccount(newAccount);
                 Debug.trace("Premium account created!");
                 Main.mainHolder.isPremium = true;
-                Main.mainHolder.b.accounts.add(account);
-                Main.mainHolder.saveFile();
+                Main.mainHolder.b.accounts.add(newAccount);
+                Main.mainHolder.b.saveFile();
             }
+            // This is a basic account.
             else if (!view.premium.isSelected())
             {
-                bank.addBankAccount(makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance)));
+                // Creates a new bank account, saves it to an arraylist, then saves it to atmUsers.dat
+                BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
+                bank.addBankAccount(newAccount);
                 Debug.trace("Basic account created!");
                 Main.mainHolder.isPremium = false;
                 Main.mainHolder.b.accounts.add(account);
-                Main.mainHolder.saveFile();
+                Main.mainHolder.b.saveFile();
             }
         }
+        // Does the number or password not match five?
         else if (addNumber.length() != 5 || addPasswd.length() != 5)
         {
+            // Character too long / small.
             Debug.error("Cannot make account, invalid values");
         }
+        // is the Balance less than or equal to zero?
         else if (balance.length() <= 0)
         {
+            // Balance too low / in negatives.
             Debug.error("The balance cannot be below zero.");
         }
     }
 
+
     public void quitApplication()
     {
-        System.exit(0);
+        Main.mainHolder.goodbye(new Stage());
+        Main.mainHolder.PlaySound(Main.atmGoodbye);
+        Main.mainHolder.StopSound();
+        // Quits the application, regardless of how many windows are open.
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                exit();
+            }
+        });
     }
 
     public void cancelOperation()

@@ -8,6 +8,7 @@ package com.atm;
 // the lab exercise to make the basic ATM work. Tutors can help you get this part
 // working in lab sessions.
 
+import java.io.*;
 import java.util.ArrayList;
 
 // If you choose the ATM for your project, you should make other modifications to
@@ -18,14 +19,14 @@ public class Bank
     protected ArrayList<BankAccount> accounts = new ArrayList<>();  // array to hold the bank accounts
     BankAccount account = null;  // currently logged in account ('null' if no-one is logged in)
     BankAccount account2 = null;
+    BankAccount currentAccount = null;
     protected boolean checked = false;
+    protected File info = new File("atmUsers.dat");
 
     // Constructor method - this provides a couple of example bank accounts to work with
     public Bank()
     {
         Debug.trace( "Bank::<constructor>");
-
-
     }
 
     // a method to create new BankAccounts - this is known as a 'factory method' and is a more
@@ -236,6 +237,47 @@ public class Bank
             return account.getBalance();
         } else {
             return -1; // use -1 as an indicator of an error
+        }
+    }
+
+    /**
+     * Saves the ArrayList into a file, which is later read by the ATM.
+     */
+
+    protected void saveFile()
+    {
+        try
+        {
+            FileOutputStream fos = new FileOutputStream(info);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(accounts);
+            oos.flush();
+            oos.close();
+            fos.close();
+        }
+
+        catch (IOException e)
+        {
+            System.err.println(e);
+        }
+    }
+
+    /**
+     * Loads the requested file from the directory, and uses the ArrayList to "fetch" the information.
+     */
+    protected void loadFile()
+    {
+        try
+        {
+            FileInputStream fls = new FileInputStream(info);
+            ObjectInputStream ols = new ObjectInputStream(fls);
+            accounts = (ArrayList<BankAccount>)ols.readObject();
+            ols.close();
+            fls.close();
+        }
+        catch (IOException | ClassNotFoundException | NullPointerException e)
+        {
+            System.err.println(e);
         }
     }
 }
