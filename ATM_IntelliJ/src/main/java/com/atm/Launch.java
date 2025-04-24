@@ -8,8 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import static java.lang.Thread.sleep;
 import static javafx.application.Platform.exit;
 
 public class Launch extends Application {
@@ -39,6 +37,7 @@ public class Launch extends Application {
 
         VBox vbox = new VBox(10, btnLNB, btnCNA, btnEXT, iv);
         Scene scene = new Scene(vbox, 400, 450);
+        scene.getStylesheets().add("atm.css");
         window.setScene(scene);
         window.setTitle("welcome to using ATM");
         window.show();

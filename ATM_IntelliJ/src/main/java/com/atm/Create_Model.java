@@ -51,12 +51,43 @@ public class Create_Model extends Bank
         String addPasswd = view.accPasswd.getText();
         String balance = view.accBalance.getText();
 
-        // is the AddNumber, addPasswd and balance textfields NOT empty?
+        // is the AddNumber, addPasswd and balance text fields NOT empty?
         if (!view.accNumber.getText().isEmpty() && !view.accPasswd.getText().isEmpty() && !view.accBalance.getText().isEmpty())
         {
             // Is the premium checkbox ticked?
             if (view.premium.isSelected())
             {
+                if (!loggedIn())
+                {
+                    bank.processNumberLoggedOut(Integer.parseInt(addNumber));
+                    bank.processPasswdLoggedOut(Integer.parseInt(addPasswd));
+
+                    if (bank.verifiedNum && bank.verifiedPasswd)
+                    {
+                        // Creates a new bank account, saves it to an arraylist, then saves it to atmUsers.dat
+                        BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
+                        bank.addBankAccount(newAccount);
+                        Debug.trace("Premium account created!");
+                        Main.mainHolder.isPremium = true;
+                        Main.mainHolder.b.accounts.add(newAccount);
+                        Main.mainHolder.b.saveFile();
+                    }
+                }
+                else
+                {
+                    bank.processNumber(Integer.parseInt(addNumber));
+                    bank.processPasswd(Integer.parseInt(addPasswd));
+
+                    if (bank.verifiedNum && bank.verifiedPasswd)
+                    {
+                        BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
+                        bank.addBankAccount(newAccount);
+                        Debug.trace("Premium account created!");
+                        Main.mainHolder.isPremium = true;
+                        Main.mainHolder.b.accounts.add(newAccount);
+                        Main.mainHolder.b.saveFile();
+                    }
+                }
                 // Creates a new bank account, saves it to an arraylist, then saves it to atmUsers.dat
                 BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
                 bank.addBankAccount(newAccount);
@@ -68,13 +99,36 @@ public class Create_Model extends Bank
             // This is a basic account.
             else if (!view.premium.isSelected())
             {
-                // Creates a new bank account, saves it to an arraylist, then saves it to atmUsers.dat
-                BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
-                bank.addBankAccount(newAccount);
-                Debug.trace("Basic account created!");
-                Main.mainHolder.isPremium = false;
-                Main.mainHolder.b.accounts.add(account);
-                Main.mainHolder.b.saveFile();
+                if (!loggedIn())
+                {
+                    bank.processNumberLoggedOut(Integer.parseInt(addNumber));
+                    bank.processPasswdLoggedOut(Integer.parseInt(addPasswd));
+
+                    if (bank.verifiedNum && bank.verifiedPasswd)
+                    {
+                        BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
+                        bank.addBankAccount(newAccount);
+                        Debug.trace("Basic account created!");
+                        Main.mainHolder.isPremium = false;
+                        Main.mainHolder.b.accounts.add(account);
+                        Main.mainHolder.b.saveFile();
+                    }
+                }
+                else
+                {
+                    bank.processNumber(Integer.parseInt(addNumber));
+                    bank.processPasswd(Integer.parseInt(addPasswd));
+
+                    if (bank.verifiedNum && bank.verifiedPasswd)
+                    {
+                        BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
+                        bank.addBankAccount(newAccount);
+                        Debug.trace("Basic account created!");
+                        Main.mainHolder.isPremium = false;
+                        Main.mainHolder.b.accounts.add(account);
+                        Main.mainHolder.b.saveFile();
+                    }
+                }
             }
         }
         // Does the number or password not match five?
@@ -88,6 +142,10 @@ public class Create_Model extends Bank
         {
             // Balance too low / in negatives.
             Debug.error("The balance cannot be below zero.");
+        }
+        else
+        {
+            Debug.error("That account already exists!");
         }
     }
 
@@ -194,7 +252,7 @@ public class Create_Model extends Bank
 //                number = 0;
 //                display1 = "";
 //                // now check the account/password combination. If it's ok go into the LOGGED_IN
-//                // state, otherwise go back to the start (by re-initialsing)
+//                // state, otherwise go back to the start (by re-initialising)
 //                if ( bank.login(accNumber, accPasswd) )
 //                {
 //                    setState(ACCOUNT_CREATED);

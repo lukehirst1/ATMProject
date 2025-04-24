@@ -1,3 +1,4 @@
+
 package com.atm;
 
 
@@ -8,57 +9,59 @@ package com.atm;
 // the lab exercise to make the basic ATM work. Tutors can help you get this part
 // working in lab sessions.
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.io.*;
+import java.security.Key;
 import java.util.ArrayList;
 
 // If you choose the ATM for your project, you should make other modifications to
 // the system yourself, based on similar examples we will cover in lectures and labs.
-public class Bank
-{
+public class Bank {
     // Instance variables containing the bank information
     protected ArrayList<BankAccount> accounts = new ArrayList<>();  // array to hold the bank accounts
     BankAccount account = null;  // currently logged in account ('null' if no-one is logged in)
     BankAccount account2 = null;
     BankAccount currentAccount = null;
+    protected int newAccNum = 0;
+    protected int newAccPasswd = 0;
     protected boolean checked = false;
-    protected File info = new File("atmUsers.dat");
+    protected boolean verifiedNum, verifiedPasswd;
+    protected static File info = new File("atmUsers.dat");
+    protected static SecretKey desKey;
+    protected static Cipher desCipher;
+    protected static byte[] textEncrypted;
 
     // Constructor method - this provides a couple of example bank accounts to work with
-    public Bank()
-    {
-        Debug.trace( "Bank::<constructor>");
+    public Bank() {
+        Debug.trace("Bank::<constructor>");
     }
 
     // a method to create new BankAccounts - this is known as a 'factory method' and is a more
     // flexible way to do it than just using the 'new' keyword directly.
-    public BankAccount makeBankAccount(int accNumber, int accPasswd, int balance)
-    {
+    public BankAccount makeBankAccount(int accNumber, int accPasswd, int balance) {
         return new BankAccount(accNumber, accPasswd, balance);
     }
 
     // a method to add a new bank account to the bank - it returns true if it succeeds
     // or false if it fails (because the bank is 'full')
-    public boolean addBankAccount(BankAccount a)
-    {
+    public boolean addBankAccount(BankAccount a) {
         if (accounts.add((a))) {
-            Debug.trace( "Bank::addBankAccount: added " +
-                    a.accNumber +" "+ a.accPasswd +" £"+ a.balance);
+            Debug.trace("Bank::addBankAccount: added " +
+                    a.accNumber + " " + a.accPasswd + " £" + a.balance);
             return true;
         } else {
-            Debug.trace( "Bank::addBankAccount: can't add bank account - too many accounts");
+            Debug.trace("Bank::addBankAccount: can't add bank account - too many accounts");
             return false;
         }
     }
 
-    public boolean processPassword(int number)
-    {
-        if (loggedIn())
-        {
+    public boolean processPassword(int number) {
+        if (loggedIn()) {
             account.processPassword(number);
             return true;
-        }
-        else
-        {
+        } else {
             Debug.trace("Bank::changePassword: cannot change password.");
             return false;
         }
@@ -66,82 +69,111 @@ public class Bank
 
     /**
      * Prints off however many receipts.
+     *
      * @param amount
      * @return
      */
-    public boolean processReceipt(int amount)
-    {
-        if (loggedIn())
-        {
+    public boolean processReceipt(int amount) {
+        if (loggedIn()) {
             return account.printStatement(amount);
-        }
-        else
-        {
+        } else {
             Debug.trace("Bank::printReceipt: cannot print receipt.");
             return false;
         }
     }
 
-    public boolean processWarn()
-    {
-        if (loggedIn() && account.balance <= 20)
-        {
+    public boolean processWarn() {
+        if (loggedIn() && account.balance <= 20) {
             return account.lowBal();
-        }
-        else
-        {
+        } else {
             Debug.trace("Bank::processWarn: Balance is fine.");
             return false;
         }
     }
 
-    public boolean processTransfer(int amount)
-    {
-        if (accounts.contains(account) && accounts.contains(account2))
-        {
+    /**
+     * This class would have processed the transfer, and checked if both accounts were found.
+     * Potentially deprecated.
+     * @param amount
+     * @return
+     */
+    public boolean processTransfer(int amount) {
+        if (accounts.contains(account) && accounts.contains(account2)) {
             return account2.transferMoney(amount);
-        }
-        else
-        {
+        } else {
             Debug.trace("Bank::processTransfer: Invalid account.");
             return false;
         }
     }
 
-    public boolean processCheck()
-    {
-        if(accounts.contains(account))
-        {
+    public boolean processCheck() {
+        if (accounts.contains(account)) {
             checked = true;
             return true;
-        }
-        else
-        {
+        } else {
             Debug.trace("Bank::processCheck: Account not in ArrayList. Have you entered the right accNumber?");
             return false;
         }
     }
 
-    public boolean processNumber(int number)
-    {
-        if (!loggedIn())
-        {
+    public boolean processNumber(int number) {
+        if (!loggedIn()) {
             Debug.trace("Bank::addNewAccount: Account already exists / Null values");
             return false;
-        }
-        else
-        {
+        } else {
             account.processNumber(number);
             return true;
         }
     }
 
+    public boolean processPasswd(int number)
+    {
+        if (!loggedIn())
+        {
+            Debug.trace("Bank::addNewAccount: Already exists / Null values");
+            return false;
+        }
+        else
+        {
+            account.processPassword(number);
+            return true;
+        }
+    }
+
+    protected boolean processPasswdLoggedOut(int number)
+    {
+        if (newAccPasswd != number)
+        {
+            newAccPasswd = number;
+            verifiedPasswd = true;
+            return true;
+        }
+        else
+        {
+            Debug.error("Failed");
+            return false;
+        }
+    }
+
+    protected boolean processNumberLoggedOut(int number)
+    {
+        if (newAccNum != number)
+        {
+            newAccNum = number;
+            verifiedNum = true;
+            return true;
+        }
+        else
+        {
+            Debug.error("Failed");
+            return false;
+        }
+    }
 
     // a variant of addBankAccount which makes the account and adds it all in one go.
     // Using the same name for this method is called 'method overloading' - two methods
     // can have the same name if they take different argument combinations
-    public boolean addBankAccount(int accNumber, int accPasswd, int balance)
-    {
+    public boolean addBankAccount(int accNumber, int accPasswd, int balance) {
         return addBankAccount(makeBankAccount(accNumber, accPasswd, balance));
     }
 
@@ -149,15 +181,12 @@ public class Bank
     // an actual bank account, and if so login to it (by setting 'account' to it)
     // and return true. Otherwise, reset the account to null and return false
     // YOU NEED TO ADD CODE TO THIS METHOD FOR THE LAB EXERCISE
-    public boolean login(int newAccNumber, int newAccPasswd)
-    {
-        Debug.trace( "Bank::login: accNumber = " + newAccNumber);
+    public boolean login(int newAccNumber, int newAccPasswd) {
+        Debug.trace("Bank::login: accNumber = " + newAccNumber);
         logout(); // logout of any previous account
 
-        for (BankAccount b: accounts)
-        {
-            if (b.accNumber == newAccNumber && b.accPasswd == newAccPasswd)
-            {
+        for (BankAccount b : accounts) {
+            if (b.accNumber == newAccNumber && b.accPasswd == newAccPasswd) {
                 Debug.trace("Bank::login: logged in, accNumber - " + newAccNumber);
                 account = b;
                 return true;
@@ -175,20 +204,16 @@ public class Bank
     }
 
     // Reset the bank to a 'logged out' state
-    public void logout()
-    {
-        if (loggedIn())
-        {
-            Debug.trace( "Bank::logout: logging out, accNumber = " + account.accNumber);
+    public void logout() {
+        if (loggedIn()) {
+            Debug.trace("Bank::logout: logging out, accNumber = " + account.accNumber);
             account = null;
         }
     }
 
     // test whether the bank is logged in to an account or not
-    public boolean loggedIn()
-    {
-        if (account == null)
-        {
+    public boolean loggedIn() {
+        if (account == null) {
             return false;
         } else {
             return true;
@@ -197,8 +222,7 @@ public class Bank
 
     // try to deposit money into the account (by calling the deposit method on the
     // BankAccount object)
-    public boolean deposit(int amount)
-    {
+    public boolean deposit(int amount) {
         if (loggedIn()) {
             return account.deposit(amount);
         } else {
@@ -208,8 +232,7 @@ public class Bank
 
     // try to withdraw money into the account (by calling the withdrawal method on the
     // BankAccount object)
-    public boolean withdraw(int amount)
-    {
+    public boolean withdraw(int amount) {
         if (loggedIn()) {
             return account.withdraw(amount);
         } else {
@@ -217,22 +240,17 @@ public class Bank
         }
     }
 
-    public int getStartBal()
-    {
-        if (loggedIn())
-        {
+    public int getStartBal() {
+        if (loggedIn()) {
             return account.getStartBal();
-        }
-        else
-        {
+        } else {
             return -1;
         }
     }
 
     // get the account balance (by calling the balance method on the
     // BankAccount object)
-    public int getBalance()
-    {
+    public int getBalance() {
         if (loggedIn()) {
             return account.getBalance();
         } else {
@@ -244,39 +262,32 @@ public class Bank
      * Saves the ArrayList into a file, which is later read by the ATM.
      */
 
-    protected void saveFile()
-    {
-        try
-        {
+    protected void saveFile() {
+        try {
             FileOutputStream fos = new FileOutputStream(info);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(accounts);
             oos.flush();
             oos.close();
             fos.close();
-        }
-
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             System.err.println(e);
         }
     }
+
 
     /**
      * Loads the requested file from the directory, and uses the ArrayList to "fetch" the information.
      */
     protected void loadFile()
     {
-        try
-        {
+        try {
             FileInputStream fls = new FileInputStream(info);
             ObjectInputStream ols = new ObjectInputStream(fls);
-            accounts = (ArrayList<BankAccount>)ols.readObject();
+            accounts = (ArrayList<BankAccount>) ols.readObject();
             ols.close();
             fls.close();
-        }
-        catch (IOException | ClassNotFoundException | NullPointerException e)
-        {
+        } catch (IOException | ClassNotFoundException | NullPointerException e) {
             System.err.println(e);
         }
     }

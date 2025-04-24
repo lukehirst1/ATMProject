@@ -6,9 +6,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.*;
-import java.util.ArrayList;
-
-import static javafx.application.Platform.exit;
 
 // atm project Main class
 // The code here creates the ATM GUI interface and model functionality, but the methods
@@ -25,11 +22,11 @@ public class Main
     String currentState;
     protected static Main mainHolder = new Main();
     protected static Model model;
+    protected static Transfer_Model tModel;
     protected static String atm = "src/main/resources/atmBeep.wav";
     protected static String welcomeATM = "src/main/resources/WelcomeSound.wav";
     protected static String atmGoodbye = "src/main/resources/goodbye.wav";
     protected static String atmAC = "src/main/resources/Action.wav";
-    protected static String name;
     protected boolean isPremium = false;
 
     public void start(Stage welcome)

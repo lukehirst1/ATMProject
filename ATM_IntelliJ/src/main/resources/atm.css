@@ -1,8 +1,9 @@
 #Layout {
-    -fx-grid-lines-visible: false;
+    -fx-grid-lines-visible: true;
     -fx-hgap: 5;
     -fx-vgap: 5;
-    -fx-padding: 10;
+    -fx-padding: 25;
+    -fx-background-color: #ADD8E6;
 }
 
 #Buttons {
@@ -12,6 +13,23 @@
     -fx-vgap: 5;
 }
 
+#TitleLabel
+{
+    -fx-background-color: #FFFFFF;
+}
+
 .button {
-    -fx-font: bold 16pt "courier new";
+    -fx-font: bold 10pt "sans-serif";
+}
+
+.label {
+    -fx-background-color: #FFFFFF;
+}
+
+.text-field {
+    -fx-background-color: #FCFF47;
+}
+
+.grid-pane {
+    -fx-background-color: #FCFF47;
 }

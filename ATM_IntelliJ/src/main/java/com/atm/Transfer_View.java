@@ -1,15 +1,14 @@
+
 package com.atm;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
-import javafx.util.*;
 
 public class Transfer_View
 {
@@ -40,25 +39,25 @@ public class Transfer_View
 
         accNumber  = new TextField();
         accNumberL = new Label("Account Number");
-        accNumber.setOnMouseClicked(mouseEvent -> selectedTf = accNumber);
+        accNumber.setOnMouseClicked(_ -> selectedTf = accNumber);
         grid.add (accNumberL, 0, 1);// text field for numbers and error messages
         grid.add( accNumber, 1, 1);       // Add to GUI on second row
 
         tranAccountBal = new TextField();
         tranAccountBalL = new Label("Account Balance");
-        tranAccountBalL.setOnMouseClicked(mouseEvent -> selectedTf = tranAccountBal);
+        tranAccountBal.setOnMouseClicked(_ -> selectedTf = tranAccountBal);
         grid.add(tranAccountBalL, 0, 2);
         grid.add(tranAccountBal, 1, 2);
 
         String[][] labels = {
-                {"7",    "8",  "9",  "",  "",  ""},
-                {"4",    "5",  "6",  "",  "",  ""},
-                {"1",    "2",  "3",  "",  "CAN",  ""},
-                {"",  "0",  "",   "",  "EXT",     "Ent"} };
+                {"7",  "8",  "9", ""  },
+                {"4",  "5",  "6", "",  },
+                {"3",  "2",  "1",  "",  },
+                {"0",  "CLR",  "CAN", "EXT"} };
 
         for ( String[] row: labels ) {
             for (String label: row) {
-                if ( label.length() >= 1 ) {
+                if (!label.isEmpty()) {
                     // non-empty string - make a button
                     Button b = new Button( label );
                     b.setOnAction( this::buttonClicked ); // set the method to call when pressed

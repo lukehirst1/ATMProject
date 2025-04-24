@@ -1,8 +1,5 @@
 package com.atm;
 
-
-import javafx.stage.Stage;
-
 // The model represents all the actual content and functionality of the app
 // For the ATM, it keeps track of the information shown in the display
 // (the title and two message boxes), and the interaction with the bank, executes
@@ -24,16 +21,14 @@ public class Model
     Bank  bank = null;              // The ATM talks to a bank, represented by the Bank object.
     int accNumber = -1;             // Account number typed in
     int accPasswd = -1;             // Password typed in
-    String receipt;
     // These three are what are shown on the View display
     String title = "Bank ATM";      // The contents of the title message
     String display1 = null;         // The contents of the Message 1 box (a single line)
-    String display2 = null;         // The contents of the Message 2 box (may be on multiple lines)
+    String display2 = null;         // The contents of the Message 2 box (maybe on multiple lines)
 
     // The other parts of the model-view-controller setup
     public View view;
     public Controller controller;
-    public Receipts rView;
 
     // Model constructor - we pass it a Bank object representing the bank we want to talk to
     public Model(Bank b)
@@ -134,7 +129,7 @@ public class Model
                 number = 0;
                 display1 = "";
                 // now check the account/password combination. If it's ok go into the LOGGED_IN
-                // state, otherwise go back to the start (by re-initialsing)
+                // state, otherwise go back to the start (by re-initialing)
                 if ( bank.login(accNumber, accPasswd))
                 {
                     setState(LOGGED_IN);
