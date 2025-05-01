@@ -23,6 +23,8 @@ public class Controller
     // This method is called by the View to respond to some user interface event
     // The controller's job is to decide what to do. In this case it uses a switch
     // statement to select the right method in the Model
+
+    // The transfer functionality has been disabled, due to time constraints and difficulty.
     public void process( String action )
     {
         Debug.trace("Controller::process: action = " + action);
@@ -66,9 +68,13 @@ public class Controller
                 Main.mainHolder.PlaySound(Main.atmAC);
                 break;
             case "Tra":
+                /*
                 Main.mainHolder.transferMoney(new Stage());
                 Main.mainHolder.PlaySound(Main.atm);
                 Main.mainHolder.PlaySound(Main.atmAC);
+                */
+                Debug.error("File corrupted. Please contact a administrator. \n" +
+                        "Error code 192: Functionality is not working properly.");
                 break;
             case "STA":
                 model.processReceipt();

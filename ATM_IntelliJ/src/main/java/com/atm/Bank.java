@@ -9,11 +9,7 @@ package com.atm;
 // the lab exercise to make the basic ATM work. Tutors can help you get this part
 // working in lab sessions.
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.io.*;
-import java.security.Key;
 import java.util.ArrayList;
 
 // If you choose the ATM for your project, you should make other modifications to
@@ -27,11 +23,7 @@ public class Bank {
     protected int newAccNum = 0;
     protected int newAccPasswd = 0;
     protected boolean checked = false;
-    protected boolean verifiedNum, verifiedPasswd;
     protected static File info = new File("atmUsers.dat");
-    protected static SecretKey desKey;
-    protected static Cipher desCipher;
-    protected static byte[] textEncrypted;
 
     // Constructor method - this provides a couple of example bank accounts to work with
     public Bank() {
@@ -67,6 +59,11 @@ public class Bank {
         }
     }
 
+    public boolean accountCheck(int accNumber)
+    {
+        return accounts.stream().anyMatch(account -> account.getAccNumber() == accNumber);
+    }
+
     /**
      * Prints off however many receipts.
      *
@@ -82,6 +79,10 @@ public class Bank {
         }
     }
 
+    /**
+     * Warns the user if the balance is less than or equal to 20. Returns false otherwise.
+     * @return
+     */
     public boolean processWarn() {
         if (loggedIn() && account.balance <= 20) {
             return account.lowBal();
@@ -93,7 +94,7 @@ public class Bank {
 
     /**
      * This class would have processed the transfer, and checked if both accounts were found.
-     * Potentially deprecated.
+     * Abandoned development.
      * @param amount
      * @return
      */
@@ -106,6 +107,10 @@ public class Bank {
         }
     }
 
+    /**
+     * Part of the transfer system. Abandoned development.
+     * @return
+     */
     public boolean processCheck() {
         if (accounts.contains(account)) {
             checked = true;
@@ -140,12 +145,16 @@ public class Bank {
         }
     }
 
+    /**
+     * Deprecated. Would have been responsible for the password logic.
+     * @param number
+     * @return
+     */
     protected boolean processPasswdLoggedOut(int number)
     {
         if (newAccPasswd != number)
         {
             newAccPasswd = number;
-            verifiedPasswd = true;
             return true;
         }
         else
@@ -155,12 +164,16 @@ public class Bank {
         }
     }
 
+    /**
+     * Deprecated. Would have been responsible for handling number log in.
+     * @param number
+     * @return
+     */
     protected boolean processNumberLoggedOut(int number)
     {
         if (newAccNum != number)
         {
             newAccNum = number;
-            verifiedNum = true;
             return true;
         }
         else
@@ -177,6 +190,12 @@ public class Bank {
         return addBankAccount(makeBankAccount(accNumber, accPasswd, balance));
     }
 
+    /**
+     * Loops through the array, and determines whether the new account matches the accNumber. Returns false if not true.
+     * @param newAccNumber
+     * @param newAccPasswd
+     * @return
+     */
     // Check whether the current saved account and password correspond to
     // an actual bank account, and if so login to it (by setting 'account' to it)
     // and return true. Otherwise, reset the account to null and return false
@@ -203,6 +222,9 @@ public class Bank {
         // SET THE account VARIABLE AND RETURN true
     }
 
+    /**
+     * Logs the user out of the ATM if they are logged in.
+     */
     // Reset the bank to a 'logged out' state
     public void logout() {
         if (loggedIn()) {
@@ -211,6 +233,10 @@ public class Bank {
         }
     }
 
+    /**
+     * Returns null if the account does not exist. Otherwise, returns true.
+     * @return
+     */
     // test whether the bank is logged in to an account or not
     public boolean loggedIn() {
         if (account == null) {
@@ -220,6 +246,11 @@ public class Bank {
         }
     }
 
+    /**
+     * Deposits the specified amount into the account. Returns false otherwise.
+     * @param amount
+     * @return
+     */
     // try to deposit money into the account (by calling the deposit method on the
     // BankAccount object)
     public boolean deposit(int amount) {
@@ -230,6 +261,11 @@ public class Bank {
         }
     }
 
+    /**
+     * Withdraws money by the specified amount if logged in, or returns false otherwise.
+     * @param amount
+     * @return
+     */
     // try to withdraw money into the account (by calling the withdrawal method on the
     // BankAccount object)
     public boolean withdraw(int amount) {
@@ -240,6 +276,10 @@ public class Bank {
         }
     }
 
+    /**
+     * Get the initial balance at the start, or -1 is no balance is found.
+     * @return
+     */
     public int getStartBal() {
         if (loggedIn()) {
             return account.getStartBal();
@@ -248,6 +288,10 @@ public class Bank {
         }
     }
 
+    /**
+     * Returns the current account balance, or -1, if nothing is found.
+     * @return
+     */
     // get the account balance (by calling the balance method on the
     // BankAccount object)
     public int getBalance() {

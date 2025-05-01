@@ -29,6 +29,11 @@ public class Main
     protected static String atmAC = "src/main/resources/Action.wav";
     protected boolean isPremium = false;
 
+    /**
+     * Launches the start screen, which is the initial screen.
+     * DEPRECATED.
+     * @param welcome
+     */
     public void start(Stage welcome)
     {
 
@@ -46,8 +51,6 @@ public class Main
         wView.controller = wController;
         wView.start(welcome);
         wModel.initialise("Welcome to the ATM");
-
-
     }
 
     /**
@@ -108,11 +111,26 @@ public class Main
         }
     }
 
-
+    /**
+     * Launches a new window which allows the user to create a new account.
+     * @param CNA
+     */
     public void createNewAccount(Stage CNA)
     {
         // Create Account Functionality container
         //Bank b = new Bank();
+
+
+        // Does the current file exist?
+        if (b.info.exists())
+        {
+            b.loadFile();
+        }
+        else
+        {
+            Debug.error("Failed to open" + b.info);
+        }
+
         Create_Model cModel = new Create_Model(b);
         Create_View cView = new Create_View();
         Create_Controller cController = new Create_Controller();
@@ -128,6 +146,10 @@ public class Main
         cView.start(new Stage());
     }
 
+    /**
+     * Launch the core banking window.
+     * @param window
+     */
     public void banking(Stage window)
     {
         // set up debugging and print initial debugging message
@@ -176,6 +198,10 @@ public class Main
         Debug.trace("atm running");
     }
 
+    /**
+     * Launches the exit screen, which then plays a goodbye sound.
+     * @param goodBye
+     */
     public static void goodbye(Stage goodBye)
     {
         Goodbye view = new Goodbye();
@@ -187,6 +213,10 @@ public class Main
         view.start(goodBye);
     }
 
+    /**
+     * Launches a window to print off receipts
+     * @param print
+     */
     public static void printed(Stage print)
     {
         Receipts view = new Receipts();
@@ -194,6 +224,10 @@ public class Main
         view.start(print);
     }
 
+    /**
+     * Launches a warning popup about the low balance.
+     * @param warn
+     */
     public static void warning(Stage warn)
     {
         lowBalWarn bal = new lowBalWarn();
@@ -203,6 +237,7 @@ public class Main
 
     /**
      * Responsible for transferring money between accounts.
+     * Disabled to prevent users from opening it. Preserved to show what we were trying to do.
      */
 
     public void transferMoney(Stage transfer)

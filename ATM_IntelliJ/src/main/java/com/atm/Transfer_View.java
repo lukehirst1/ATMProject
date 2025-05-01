@@ -10,6 +10,9 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
+/**
+ * This would have held the window to open the transfer function window in JavaFX. This functionality has been disabled by LH.
+ */
 public class Transfer_View
 {
     int H = 420;         // Height of window pixels

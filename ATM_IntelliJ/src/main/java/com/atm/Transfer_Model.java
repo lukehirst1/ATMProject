@@ -6,6 +6,10 @@ import javafx.stage.Stage;
 
 import static javafx.application.Platform.exit;
 
+/**
+ * Abandoned. I (Luke Hirst), tried to implement this across the Easter Holidays to little success.
+ * The code will remain to show what I was trying to do.
+ */
 public class Transfer_Model
 {
     // The container objects for this class.
@@ -18,6 +22,10 @@ public class Transfer_Model
     String display2 = null;
     public Boolean transferredA = false;
 
+    /**
+     * [ABANDONED] Calls a reference to the Bank class.
+     * @param b
+     */
     public Transfer_Model(Bank b)
     {
         Debug.trace("Model::<constructor>");
@@ -31,6 +39,9 @@ public class Transfer_Model
                 "Followed by \"Ent\"";
     }
 
+    /**
+     * This code would have been responsible for collecting the first account information, and checking if was valid or not.
+     */
     public void transferAccountA()
     {
         String accountA = view.accNumber.getText();
@@ -52,6 +63,9 @@ public class Transfer_Model
         }
     }
 
+    /**
+     * This code would have allowed the user to transfer money from the first account, to another.
+     */
     public void transferAccountB()
     {
         int monAmount = 0;

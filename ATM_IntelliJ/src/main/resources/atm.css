@@ -15,7 +15,7 @@
 
 #TitleLabel
 {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #f8ece8;
 }
 
 .button {
@@ -23,7 +23,7 @@
 }
 
 .label {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #FCFF47;
 }
 
 .text-field {
@@ -32,4 +32,11 @@
 
 .grid-pane {
     -fx-background-color: #FCFF47;
+}
+.string {
+    -fx-background-color:#FCFF47;
+}
+.tile-pane {
+    -fx-background-color:#E6BBAD ;
+
 }

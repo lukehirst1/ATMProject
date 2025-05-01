@@ -22,7 +22,7 @@ public class Model
     int accNumber = -1;             // Account number typed in
     int accPasswd = -1;             // Password typed in
     // These three are what are shown on the View display
-    String title = "Bank ATM";      // The contents of the title message
+    String title = "Bank ATM"+" ".repeat(130);      // The contents of the title message
     String display1 = null;         // The contents of the Message 1 box (a single line)
     String display2 = null;         // The contents of the Message 2 box (maybe on multiple lines)
 
@@ -134,7 +134,8 @@ public class Model
                 {
                     setState(LOGGED_IN);
                     display2 = "Accepted\n" +
-                            "Now enter the transaction you require";
+                            "Now enter the transaction you require" + "\n" +
+                            "Make sure to keep checking your balance.";
                 } else {
                     initialise("Unknown account/password");
                 }
@@ -150,13 +151,17 @@ public class Model
     // the bank (number is the amount showing in the interface display)
     public void processWithdraw()
     {
-        if (state.equals(LOGGED_IN) ) {
-            if ( bank.withdraw( number ) )
+        if (state.equals(LOGGED_IN) )
+        {
+            if ( bank.withdraw(number))
             {
-                display2 =   "Withdrawn: " + number;
-                // Show updated balance
+                // Show the updated balance
+                display2 =   "Withdrawn: " + number + "\n" +
+                            "Your new balance is: " + bank.getBalance() + "\n" +
+                        "Please enter the transaction you require.";
             } else {
-                display2 =   "You do not have sufficient funds";
+                display2 =   "You do not have sufficient funds" + "\n" +
+                        "Please check your balance before withdrawing.";
             }
             number = 0;
             display1 = "";
@@ -173,7 +178,9 @@ public class Model
         if (state.equals(LOGGED_IN) ) {
             bank.deposit( number );
             display1 = "";
-            display2 = "Deposited: " + number;
+            display2 = "Deposited: " + number + "\n" +
+                    "Your new balance is: " + bank.getBalance() + "\n" +
+                    "Please enter the transaction that you require.";
             number = 0;
             // Show updated balance
         } else {
@@ -191,7 +198,8 @@ public class Model
             display2 = "Your balance is: " + bank.getBalance();
             if (bank.getBalance() < 20)
             {
-                display2 = "Your balance is: " + bank.getBalance();
+                display2 = "Your balance is: " + bank.getBalance() + "\n" +
+                        "Please enter the transaction that you require.";
                 bank.account.lowBal();
             }
         } else {

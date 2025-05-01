@@ -3,6 +3,8 @@ package com.atm;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
+import java.util.stream.Collectors;
+
 import static javafx.application.Platform.exit;
 
 public class Create_Model extends Bank
@@ -20,11 +22,11 @@ public class Create_Model extends Bank
     int accNumber = -1;             // Account number typed in
     int accPasswd = -1;             // Password typed in
     int accBalance = -1;               // Initial Balance
-    public Boolean isPremium = false;
     // These three are what are shown on the View display
     String title = "Bank ATM Account Creation";      // The contents of the title message
     String display1 = null;         // The contents of the Message 1 box (a single line)
     String display2 = null;         // The contents of the Message 2 box (may be on multiple lines)
+    protected boolean accountExist = false;
 
     // Model constructor - we pass it a Bank object representing the bank we want to talk to
     public Create_Model(Bank b)
@@ -51,47 +53,37 @@ public class Create_Model extends Bank
         String addPasswd = view.accPasswd.getText();
         String balance = view.accBalance.getText();
 
+
         // is the AddNumber, addPasswd and balance text fields NOT empty?
         if (!view.accNumber.getText().isEmpty() && !view.accPasswd.getText().isEmpty() && !view.accBalance.getText().isEmpty())
         {
+            accNumber = Integer.parseInt(addNumber);
+            accPasswd = Integer.parseInt(addPasswd);
+            accBalance = Integer.parseInt(balance);
+
+            // Does the number or password not match five?
+            if (addNumber.length() != 5 || addPasswd.length() != 5)
+            {
+                // Character too long / small.
+                Debug.error("Cannot make account, invalid values");
+            }
+            // is the Balance less than or equal to zero?
+            if (balance.length() <= 0)
+            {
+                // Balance too low / in negatives.
+                Debug.error("The balance cannot be below zero.");
+            }
             // Is the premium checkbox ticked?
             if (view.premium.isSelected())
             {
-                if (!loggedIn())
+                BankAccount newAccount = makeBankAccount(accNumber, accPasswd, accBalance);
+                if (bank.accountCheck(accNumber))
                 {
-                    bank.processNumberLoggedOut(Integer.parseInt(addNumber));
-                    bank.processPasswdLoggedOut(Integer.parseInt(addPasswd));
-
-                    if (bank.verifiedNum && bank.verifiedPasswd)
-                    {
-                        // Creates a new bank account, saves it to an arraylist, then saves it to atmUsers.dat
-                        BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
-                        bank.addBankAccount(newAccount);
-                        Debug.trace("Premium account created!");
-                        Main.mainHolder.isPremium = true;
-                        Main.mainHolder.b.accounts.add(newAccount);
-                        Main.mainHolder.b.saveFile();
-                    }
+                    Debug.error("Account already exists!");
+                    return;
                 }
-                else
-                {
-                    bank.processNumber(Integer.parseInt(addNumber));
-                    bank.processPasswd(Integer.parseInt(addPasswd));
-
-                    if (bank.verifiedNum && bank.verifiedPasswd)
-                    {
-                        BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
-                        bank.addBankAccount(newAccount);
-                        Debug.trace("Premium account created!");
-                        Main.mainHolder.isPremium = true;
-                        Main.mainHolder.b.accounts.add(newAccount);
-                        Main.mainHolder.b.saveFile();
-                    }
-                }
-                // Creates a new bank account, saves it to an arraylist, then saves it to atmUsers.dat
-                BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
                 bank.addBankAccount(newAccount);
-                Debug.trace("Premium account created!");
+                Debug.trace("Premium account selected!");
                 Main.mainHolder.isPremium = true;
                 Main.mainHolder.b.accounts.add(newAccount);
                 Main.mainHolder.b.saveFile();
@@ -99,62 +91,35 @@ public class Create_Model extends Bank
             // This is a basic account.
             else if (!view.premium.isSelected())
             {
-                if (!loggedIn())
+                BankAccount newAccount = makeBankAccount(accNumber, accPasswd, accBalance);
+                if (bank.accountCheck(accNumber))
                 {
-                    bank.processNumberLoggedOut(Integer.parseInt(addNumber));
-                    bank.processPasswdLoggedOut(Integer.parseInt(addPasswd));
-
-                    if (bank.verifiedNum && bank.verifiedPasswd)
-                    {
-                        BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
-                        bank.addBankAccount(newAccount);
-                        Debug.trace("Basic account created!");
-                        Main.mainHolder.isPremium = false;
-                        Main.mainHolder.b.accounts.add(account);
-                        Main.mainHolder.b.saveFile();
-                    }
+                    Debug.error("Account already exists!");
+                    return;
                 }
-                else
-                {
-                    bank.processNumber(Integer.parseInt(addNumber));
-                    bank.processPasswd(Integer.parseInt(addPasswd));
-
-                    if (bank.verifiedNum && bank.verifiedPasswd)
-                    {
-                        BankAccount newAccount = makeBankAccount(Integer.parseInt(addNumber), Integer.parseInt(addPasswd), Integer.parseInt(balance));
-                        bank.addBankAccount(newAccount);
-                        Debug.trace("Basic account created!");
-                        Main.mainHolder.isPremium = false;
-                        Main.mainHolder.b.accounts.add(account);
-                        Main.mainHolder.b.saveFile();
-                    }
-                }
+                bank.addBankAccount(newAccount);
+                Debug.trace("Basic account created!");
+                Main.mainHolder.isPremium = false;
+                Main.mainHolder.b.accounts.add(newAccount);
+                Main.mainHolder.b.saveFile();
             }
-        }
-        // Does the number or password not match five?
-        else if (addNumber.length() != 5 || addPasswd.length() != 5)
-        {
-            // Character too long / small.
-            Debug.error("Cannot make account, invalid values");
-        }
-        // is the Balance less than or equal to zero?
-        else if (balance.length() <= 0)
-        {
-            // Balance too low / in negatives.
-            Debug.error("The balance cannot be below zero.");
-        }
-        else
-        {
-            Debug.error("That account already exists!");
+            else
+            {
+                Debug.error("Unspecified error!" + "\n" +
+                        "Please contact a technician immediately!");
+            }
         }
     }
 
-
+    /**
+     * Quits the application, and saves the file.
+     */
     public void quitApplication()
     {
         Main.mainHolder.goodbye(new Stage());
         Main.mainHolder.PlaySound(Main.atmGoodbye);
         Main.mainHolder.StopSound();
+        Main.mainHolder.b.saveFile();
         // Quits the application, regardless of how many windows are open.
         Platform.runLater(new Runnable() {
             @Override
@@ -169,6 +134,9 @@ public class Create_Model extends Bank
         });
     }
 
+    /**
+     * Clears the text from the window.
+     */
     public void cancelOperation()
     {
         view.accBalance.setText("");
@@ -177,6 +145,10 @@ public class Create_Model extends Bank
         Debug.trace("All values cleared");
     }
 
+    /**
+     * Processes numbers.
+     * @param label
+     */
     // These methods are called by the Controller to change the Model
     // when particular buttons are pressed on the GUI
     public void processNumbers(String label)

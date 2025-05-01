@@ -67,7 +67,7 @@ public class BankAccount implements Serializable
         Debug.trace("BankAccount::withdraw: amount =" + amount);
 
         // CHANGE CODE HERE TO WITHDRAW MONEY FROM THE ACCOUNT
-        if (amount < 0)
+        if (amount <= 0)
         {
             Debug.error("Insufficient funds");
             return false;
@@ -233,7 +233,7 @@ public class BankAccount implements Serializable
 
     // Returns the initial balance in the account
     public int getStartBal()
-    {;
+    {
         Debug.trace("LocalBank::getStartBal");
 
         return startBal;
@@ -247,6 +247,11 @@ public class BankAccount implements Serializable
 
         // CHANGE CODE HERE TO RETURN THE BALANCE
         return balance;
+    }
+
+    public int getAccNumber()
+    {
+        return accNumber;
     }
 }
 

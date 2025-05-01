@@ -10,6 +10,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
+/**
+ * Deprecated. Please see Launch for the replaced functionality.
+ */
 public class Welcome_View
 {
     int H = 420;         // Height of window pixels

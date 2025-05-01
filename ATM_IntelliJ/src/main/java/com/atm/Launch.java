@@ -39,7 +39,7 @@ public class Launch extends Application {
         Scene scene = new Scene(vbox, 400, 450);
         scene.getStylesheets().add("atm.css");
         window.setScene(scene);
-        window.setTitle("welcome to using ATM");
+        window.setTitle("Welcome to the University of Brighton ATM");
         window.show();
     }
 
@@ -71,6 +71,7 @@ public class Launch extends Application {
                 Main.mainHolder.goodbye(new Stage());
                 Main.mainHolder.PlaySound(Main.atmGoodbye);
                 Main.mainHolder.StopSound();
+                Main.mainHolder.b.saveFile();
                 // Quits the application, regardless of how many windows are open.
                 Platform.runLater(new Runnable() {
                     @Override

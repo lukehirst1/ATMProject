@@ -1,5 +1,9 @@
 package com.atm;
 
+/**
+ * Abandoned. I (Luke Hirst), tried to implement this across the Easter Holidays to little success.
+ * The code will remain to show what I was trying to do.
+ */
 public class Transfer_Controller {
     public Transfer_Model model;
     public Transfer_View view;

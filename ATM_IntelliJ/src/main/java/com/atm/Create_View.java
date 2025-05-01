@@ -1,6 +1,7 @@
 package com.atm;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -38,8 +39,8 @@ public class Create_View
         buttonPane = new TilePane();
         buttonPane.setId("Buttons");
 
-        title  = new Label("create new Account");           // Message bar at the top for the title
-        grid.add( title, 0, 0);         // Add to GUI at the top
+        title  = new Label("Create new Account");           // Message bar at the top for the title
+        //grid.add( title, 0, 0);         // Add to GUI at the top
 
         accNumber  = new TextField();
         accNumberL = new Label("New Account Number");
@@ -62,10 +63,10 @@ public class Create_View
         grid.add(premium, 1, 4);
 
         String[][] labels = {
-                {"7",    "8",  "9",  "",  "",  ""},
-                {"4",    "5",  "6",  "",  "",  ""},
-                {"1",    "2",  "3",  "",  "CAN",  ""},
-                {"",  "0",  "",   "",  "EXT",     "Ent"} };
+                {"7","8","9"},
+                {"4","5","6"},
+                {"3","2","1"},
+                {"0","CAN","EXT","Ent"} };
 
         for ( String[] row: labels ) {
             for (String label: row) {
@@ -83,12 +84,17 @@ public class Create_View
         }
 
         grid.add(buttonPane,1,5); // add the tiled pane of buttons to the grid
+        VBox vbox = new VBox(10,title, grid);
+        vbox.setAlignment(Pos.TOP_CENTER);
+        vbox.setStyle("-fx-padding:20px");
+
+
 
         // add the complete GUI to the window and display it
-        Scene scene = new Scene(grid, W, H);
+        Scene scene = new Scene(vbox, W, H);
         scene.getStylesheets().add("atm.css"); // tell the app to use our css file
         window.setScene(scene);
-        window.setTitle("create new Account");
+        window.setTitle("Create new Account");
         window.setX(200);
         window.setY(200);
         window.show();

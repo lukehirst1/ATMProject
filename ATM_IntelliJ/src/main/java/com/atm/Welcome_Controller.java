@@ -2,6 +2,9 @@ package com.atm;
 
 import javafx.stage.Stage;
 
+/**
+ * Deprecated. Please see Launch for replacement class.
+ */
 public class Welcome_Controller
 {
     public Welcome_View view;
