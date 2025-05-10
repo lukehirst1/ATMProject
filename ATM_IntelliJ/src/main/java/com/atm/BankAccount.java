@@ -176,6 +176,11 @@ public class BankAccount implements Serializable
         }
     }
 
+    /**
+     * Checks if the password does not already exist, and allows the password to be changed.
+     * @param number
+     * @return
+     */
     public boolean processPassword(int number)
     {
         if (accPasswd != number)
@@ -202,7 +207,7 @@ public class BankAccount implements Serializable
         if (accNumber != number)
         {
             Debug.trace("New account number created.");
-            accPasswd = number;
+            accNumber = number;
             return true;
         }
         else

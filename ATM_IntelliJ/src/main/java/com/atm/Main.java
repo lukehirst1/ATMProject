@@ -128,7 +128,7 @@ public class Main
         }
         else
         {
-            Debug.error("Failed to open" + b.info);
+            Debug.error("Failed to open " + b.info);
         }
 
         Create_Model cModel = new Create_Model(b);
@@ -174,7 +174,9 @@ public class Main
         }
         else
         {
-            Debug.error("Failed to open" + b.info);
+            Debug.error("Failed to open " + b.info);
+            b.saveFile();
+            Debug.trace("Creating default file..");
         }
 
 

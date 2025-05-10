@@ -49,6 +49,11 @@ public class Bank {
         }
     }
 
+    /**
+     * Processes the new password.
+     * @param number
+     * @return
+     */
     public boolean processPassword(int number) {
         if (loggedIn()) {
             account.processPassword(number);
@@ -121,29 +126,29 @@ public class Bank {
         }
     }
 
-    public boolean processNumber(int number) {
-        if (!loggedIn()) {
-            Debug.trace("Bank::addNewAccount: Account already exists / Null values");
-            return false;
-        } else {
-            account.processNumber(number);
-            return true;
-        }
-    }
+//    public boolean processNumber(int number) {
+//        if (!loggedIn()) {
+//            Debug.trace("Bank::addNewAccount: Account already exists / Null values");
+//            return false;
+//        } else {
+//            account.processNumber(number);
+//            return true;
+//        }
+//    }
 
-    public boolean processPasswd(int number)
-    {
-        if (!loggedIn())
-        {
-            Debug.trace("Bank::addNewAccount: Already exists / Null values");
-            return false;
-        }
-        else
-        {
-            account.processPassword(number);
-            return true;
-        }
-    }
+//    public boolean processPasswd(int number)
+//    {
+//        if (!loggedIn())
+//        {
+//            Debug.trace("Bank::addNewAccount: Already exists / Null values");
+//            return false;
+//        }
+//        else
+//        {
+//            account.processPassword(number);
+//            return true;
+//        }
+//    }
 
     /**
      * Deprecated. Would have been responsible for the password logic.

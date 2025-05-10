@@ -84,23 +84,6 @@ public class Model
         display();  // update the GUI
     }
 
-    public void processPassword()
-    {
-        // Is the number valid?
-        if (state.equals(LOGGED_IN))
-        {
-            // Update the password
-            bank.processPassword(number);
-            display2 = "Please enter your new password:";
-            initialise("Password changed. Please log out.");
-        }
-        else
-        {
-            initialise("You are not logged in");
-        }
-    }
-
-
     // process the Enter button
     // this is the most complex operation - the Enter key causes the ATM to change state
     // from account number, to password, to logged_in and back to account number
@@ -223,6 +206,22 @@ public class Model
             initialise("You are not logged in.");
         }
         display();
+    }
+
+    public void processPassword()
+    {
+        // Is the number valid?
+        if (state.equals(LOGGED_IN))
+        {
+            // Update the password
+            display2 = "Please enter your new password:";
+            initialise("Password changed. Please log out.");
+            Main.mainHolder.b.saveFile();
+        }
+        else
+        {
+            initialise("You are not logged in");
+        }
     }
 
     // Finish button - check we are logged in and if so log out
